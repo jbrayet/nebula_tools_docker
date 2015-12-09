@@ -1,4 +1,4 @@
-Dockerfile
+#Dockerfile
 #
 # Version:          1
 # Software:         AnnotatePeaks
@@ -22,6 +22,8 @@ RUN apt-get update && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+
+RUN 
 
 
 ##################### INSTALLATION END #####################
