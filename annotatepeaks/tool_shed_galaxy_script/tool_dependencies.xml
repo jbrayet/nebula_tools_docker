@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<tool_dependency>
+    <package name="fontconfig" version="2.11.1">
+      <repository changeset_revision="db378a241d59" name="package_fontconfig_2_11_1" owner="devteam" toolshed="http://testtoolshed.g2.bx.psu.edu" />
+    </package>
+    <package name="R" version="3.1.2">
+      <repository changeset_revision="41f43a2064ba" name="package_r_3_1_2" owner="iuc" toolshed="https://testtoolshed.g2.bx.psu.edu" />
+    </package>
+</tool_dependency>

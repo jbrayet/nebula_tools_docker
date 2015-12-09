@@ -1,0 +1,152 @@
+<!--annotatePeaks - developed by Jocelyn Brayet <jocelyn.brayet@curie.fr>
+Copyright (C) 2015  Institut Curie
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.-->
+<tool id="annotatePeaks" name="AnnotatePeaks" version="1.0">
+  <description>Genomic annotation of Chip-Seq peaks</description>
+  <requirements>
+    <requirement type="package" version="2.11.1">fontconfig</requirement>
+    <requirement type="package" version="3.1.2">R</requirement>
+  </requirements>
+  <command interpreter="bash">
+#if str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "no" #annotatePeaks_wrapper.sh -f $inputfile -y $log -m $minScore -l $left -o $outputPNG -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "yes" # annotatePeaks_wrapper.sh -f $inputfile -y $log -c $controlfile -x $statsControl -o $outputPNG -m $minScore -l $left -r $right  -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "no" # annotatePeaks_wrapper.sh -y $log -f $inputfile -e $regfile -m $minScore -l $left -o $outputPNG -r $right  -d $DownGene -h $EnhLeft  -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "yes" # annotatePeaks_wrapper.sh -f $inputfile -c $controlfile -x $statsControl -l $left -y $log -o $outputPNG -m $minScore -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -e $regfile -p 0 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "no" #annotatePeaks_wrapper.sh -f $inputfile -y $log -m $minScore -l $left -o $outputPDF -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "yes" # annotatePeaks_wrapper.sh -f $inputfile -y $log -c $controlfile -x $statsControl -o $outputPDF -m $minScore -l $left -r $right  -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "no" # annotatePeaks_wrapper.sh -y $log -f $inputfile -e $regfile -m $minScore -l $left -o $outputPDF -r $right  -d $DownGene -h $EnhLeft  -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "yes" # annotatePeaks_wrapper.sh -f $inputfile -c $controlfile -x $statsControl -l $left -y $log -o $outputPDF -m $minScore -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -e $regfile -p 1#end if
+ </command>
+   <inputs>
+
+    <param name="inputfile" type="data" label="ChIP peaks" value="ChIP peaks File" format="bed"/>
+    <param name="minScore" type="float" label="MinimalScore" value="0" help="Set to 0 if you don't want to filter your .BED file with peaks"/>
+
+    <conditional name="use_control">
+    <param name="use_control_selector" type="select" label="Use control data">
+        <option value="no" selected="true">No</option>
+        <option value="yes">Yes</option>
+    </param>
+    <when value="yes">
+    <param name="controlfile" type="data" label="Control peaks" value="Control peaks File" format="bed"/>
+    </when>
+    </conditional>
+
+    <param name="left" type="integer" label="Define Promoter is a region up to X bp upstream gene TSS" value="-2000"/>
+    <param name="right" type="integer" label="Define Immediate Downstream is a region up to X bp downstream gene TSS" value="2000"/>
+    <param name="EnhLeft" type="integer" label="Define Enhancer is a region up to X bp upstream gene TSS" value="-30000"/>
+    <param name="DownGene" type="integer" label="Define Gene Downstream is a region up to X bp downstream transcription end" value="5000"/>
+
+
+<conditional name="input_organism">
+    <param name="input_organism_selector" type="select" label="Select organism">
+        <option value="Human" selected="true">Homo sapiens</option>
+        <option value="Mouse">Mus musculus</option>
+        <option value="Zebrafish">Zebrafish (Danio rerio)</option>
+        <option value="XTropicalis">X.Tropicalis</option>
+        <option value="Bacteria/MycoTube">M. tuberculosis</option>
+    </param>
+    <when value="Human">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="hg19" selected="true">hg19</option>
+        <option value="hg18">hg18</option>
+    </param>
+    </when>
+    <when value="Mouse">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="mm8" >mm8</option>
+        <option value="mm9" selected="true">mm9</option>
+        <option value="mm10" >mm10</option>
+    </param>
+    </when>
+    <when value="Zebrafish">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="zv9" selected="true">zv9</option>
+    </param>
+    </when>
+    <when value="XTropicalis">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="xenTro2" >xenTro2</option>
+        <option value="xenTro3" selected="true">xenTro3</option>
+    </param>
+    </when>
+    <when value="Bacteria/MycoTube">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="H37Rv" selected="true">H37Rv</option>
+    </param>
+    </when>
+</conditional>
+
+<conditional name="use_reg">
+    <param name="use_reg_selector" type="select" label="Use transcriptomic data (up- and down- regulated genes)">
+        <option value="no" selected="true">No</option>
+        <option value="yes">Yes</option>
+    </param>
+    <when value="yes">
+    <param name="regfile" type="data" label="File with information about gene regulation" value="Regulation data" format="txt"/>
+    </when>
+    </conditional>
+
+   <param name="if_PDF" type="boolean" label="Do you want to have a PDF image (default PNG)?" truevalue="1" falsevalue="0" checked="False"/>
+  </inputs>
+  <outputs>
+    <data name="outputPNG" format="png" label="Peaks Stats (png)">
+    <filter>(if_PDF == 0)</filter>
+    </data>
+    <data name="outputPDF" format="pdf" label="Peaks Stats (pdf)">
+    <filter>(if_PDF == True)</filter>
+    </data>
+
+    <data name="stats" format="tabular" label="Annotated Peaks (ChIP)"/>
+    <data name="log" format="log" label=".LOG for Annotated Peaks"/>
+    <data name="statsControl" format="tabular" label="Annotated Peaks (Control)">
+    <filter>(use_control['use_control_selector'] == 'yes')</filter>
+    </data>
+  </outputs>
+  <tests>
+    <test>
+      <param name="inputfile" value="peaks_test.bed"/>
+      <param name="minScore" value="0.0"/>
+      <param name="use_control_selector" value="yes"/>
+      <param name="controlfile" value="peaks_control.bed"/>
+      <param name="left" value="-2000"/>
+      <param name="right" value="2000"/>
+      <param name="EnhLeft" value="-30000"/>
+      <param name="DownGene" value="5000"/>
+      <param name="input_organism_selector" value="Mouse"/>
+      <param name="version" value="mm9"/>
+      <param name="use_reg_selector" value="yes"/>
+      <param name="regfile" value="Probesets_FC1.5_10022011.txt"/>
+      <param name="if_PDF" value="1"/>
+      <output name="outputPDF" file="test_annotatePeaks_1.dat" ftype="pdf"/>
+      <output name="stats" file="test_annotatePeaks_2.dat" ftype="tabular"/>
+      <output name="log" file="test_annotatePeaks_3.dat" ftype="log"/>
+      <output name="statsControl" file="test_annotatePeaks_4.dat" ftype="tabular"/>
+    </test>
+  </tests>
+  <help>
+**What it does**
+
+This tool annotates peaks with genomic feature (promoter, enhancer, exon, intron, etc.) and creates a .png file with distribution
+
+  </help>
+  <citations>
+    <citation type="bibtex">@article{Boeva01102012,
+      author = {Boeva, Valentina and Lermine, Alban and Barette, Camille and Guillouf, Christel and Barillot, Emmanuel},
+      title = {Nebula—a web-server for advanced ChIP-seq data analysis},
+      volume = {28},
+      number = {19},
+      pages = {2517-2519},
+      year = {2012},
+      doi = {10.1093/bioinformatics/bts463},
+      URL = {http://bioinformatics.oxfordjournals.org/content/28/19/2517.abstract},
+      eprint = {http://bioinformatics.oxfordjournals.org/content/28/19/2517.full.pdf+html},
+      journal = {Bioinformatics}
+      }</citation>
+    </citations>
+</tool>
