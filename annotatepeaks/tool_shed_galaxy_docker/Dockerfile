@@ -1,4 +1,4 @@
-#Dockerfile
+# Dockerfile
 #
 # Version:          1
 # Software:         AnnotatePeaks
@@ -23,6 +23,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
+RUN https://github.com/jbrayet/nebula_tools_docker/raw/master/annotatepeaks/tool_shed_galaxy_script.tar.gz -P /usr/bin
 RUN 
 
 
