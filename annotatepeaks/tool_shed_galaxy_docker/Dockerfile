@@ -15,18 +15,42 @@
 # Set the base image to Ubuntu
 FROM ubuntu:14.04
 
+#############
+
 RUN apt-get update && \
     apt-get install -y \
-      wget && \
+      wget \
+      curl \
+      build-essential \
+      gfortran \
+      libxt-dev \
+      xorg-dev \
+      libpango1.0-dev \
+      libssl-dev \
+      libcairo-dev && \   
     apt-get clean && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN mkdir /usr/bin/annotatePeaks
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/annotatepeaks/tool_shed_galaxy_script.tar.gz -P /usr/bin/annotatePeaks
+WORKDIR /usr/bin/annotatePeaks
+RUN tar -xvf tool_shed_galaxy_script.tar.gz && rm tool_shed_galaxy_script.tar.gz
+RUN mv tool_shed_galaxy_script/* . && rm -rf tool_shed_galaxy_script annotatePeaks_wrapper* tool_dependencies.xml
 
-RUN https://github.com/jbrayet/nebula_tools_docker/raw/master/annotatepeaks/tool_shed_galaxy_script.tar.gz -P /usr/bin
-RUN 
+RUN wget http://cran.r-project.org/src/base/R-3/R-3.1.0.tar.gz -P /usr/bin
+RUN tar -zxvf /usr/bin/R-3.1.0.tar.gz -C /usr/bin/
+RUN rm -rf /usr/bin/R-3.1.0.tar.gz
+WORKDIR /usr/bin/R-3.1.0
+RUN ./configure --with-readline=no
+RUN make
 
+RUN ln -s /usr/bin/R-3.1.0/bin/R /usr/bin/R
 
+WORKDIR /usr/bin/annotatePeaks
+
+EXPOSE :80
+EXPOSE :21
 ##################### INSTALLATION END #####################
 
 # File Author / Maintainer
