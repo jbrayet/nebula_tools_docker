@@ -46,6 +46,10 @@ RUN make
 
 RUN ln -s /usr/bin/R-3.1.0/bin/R /usr/bin/R
 
+RUN echo "install.packages(\"Hmisc\", repos=\"http://cran.rstudio.com/\", dependencies=TRUE)" > install_Hmisc.R
+RUN /usr/bin/R-3.1.0/bin/Rscript --slave install_Hmisc.R
+RUN rm install_Hmisc.R
+
 WORKDIR /usr/bin/maketssdist
 
 ##################### INSTALLATION END #####################
