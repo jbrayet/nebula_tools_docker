@@ -6,7 +6,7 @@
 # Description:      Tools for annotates peaks with genomic feature (promoter, enhancer, exon, intron, etc.) and creates a .png or .pdf file with distribution.
 # Website:          http://nebula.curie.fr
 # Tags:             NGS: Peak Annotation
-# Provides:         samtools 1.0
+# Provides:         Nebula
 # Build Cmd:        docker build --rm -t institutcuriengsintegration/annotatepeaks:1.0 .
 # Pull Cmd:         docker pull institutcuriengsintegration/annotatepeaks:1.0
 # Run Cmd:          docker run --rm -it institutcuriengsintegration/annotatepeaks:1.0 <options> <files>
