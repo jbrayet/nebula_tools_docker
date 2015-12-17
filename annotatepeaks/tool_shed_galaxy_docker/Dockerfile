@@ -26,7 +26,6 @@ RUN apt-get update && \
       libxt-dev \
       xorg-dev \
       libpango1.0-dev \
-      libssl-dev \
       libcairo-dev && \   
     apt-get clean && \
     apt-get purge && \
@@ -49,8 +48,6 @@ RUN ln -s /usr/bin/R-3.1.0/bin/R /usr/bin/R
 
 WORKDIR /usr/bin/annotatePeaks
 
-EXPOSE :80
-EXPOSE :21
 ##################### INSTALLATION END #####################
 
 # File Author / Maintainer
