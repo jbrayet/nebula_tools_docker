@@ -1,0 +1,132 @@
+<!--MakeTSSdist - developed by Jocelyn Brayet <jocelyn.brayet@curie.fr>
+Copyright (C) 2015  Institut Curie
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.-->
+<tool id="makeTSSdist" name="MakeTSSdist" version="1.0">
+  <description>Get peak distribution around TSS</description>
+  <requirements>
+    <container type="docker">institutcuriengsintegration/maketssdist:1.0</container>
+  </requirements>
+  <command interpreter="bash">
+
+#if str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "no" #makeTSSdist_wrapper.sh -f $inputfile -l $left -o $outputPNG -r $right -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "no" #makeTSSdist_wrapper.sh -f $inputfile -l $left -o $outputPDF -r $right -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "yes" # makeTSSdist_wrapper.sh -f $inputfile -c $controlfile -o $outputPNG -l $left -r $right -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "yes" # makeTSSdist_wrapper.sh -f $inputfile -c $controlfile -o $outputPDF -l $left -r $right -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "no" # makeTSSdist_wrapper.sh -f $inputfile -e $regfile -l $left -o $outputPNG -r $right -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "no" # makeTSSdist_wrapper.sh -f $inputfile -e $regfile -l $left -o $outputPDF -r $right -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "yes" #makeTSSdist_wrapper.sh -f $inputfile -c $controlfile -l $left -o $outputPNG -r $right -u $stats -v $input_organism.version -e $regfile -p 0 #else # makeTSSdist_wrapper.sh -f $inputfile -c $controlfile -l $left -o $outputPDF -r $right -u $stats -v $input_organism.version -e $regfile -p 1 #end if
+  </command>
+  <inputs>
+     <param name="inputfile" type="data" label="ChIP peaks" value="ChIP peaks File" format="bed"/>
+     <conditional name="use_control">
+       <param name="use_control_selector" type="select" label="Use control data">
+         <option value="no" selected="true">No</option>
+         <option value="yes">Yes</option>
+       </param>
+       <when value="yes">
+         <param name="controlfile" type="data" label="Control peaks" value="Control peaks File" format="bed"/>
+       </when>
+     </conditional>
+     <param name="left" type="integer" label="Step (bp)" value="1000"/>
+     <param name="right" type="integer" label="length of the region +-TSS to consider (bp)" value="50000"/>
+     <conditional name="input_organism">
+       <param name="input_organism_selector" type="select" label="Select organism">
+         <option value="Human" selected="true">Homo sapiens</option>
+         <option value="Mouse">Mus musculus</option>
+         <option value="Zebrafish">Zebrafish (Danio rerio)</option>
+         <option value="XTropicalis">X.Tropicalis</option>
+         <option value="Bacteria/MycoTube">M. tuberculosis</option>
+       </param>
+       <when value="Human">
+         <param name="version" type="select" label="Select genome vesion">
+           <option value="hg19" selected="true">hg19</option>
+           <option value="hg18">hg18</option>
+         </param>
+       </when>
+       <when value="Mouse">
+         <param name="version" type="select" label="Select genome vesion">
+           <option value="mm8" >mm8</option>
+           <option value="mm9" selected="true">mm9</option>
+           <option value="mm10" >mm10</option>
+         </param>
+       </when>
+       <when value="Zebrafish">
+         <param name="version" type="select" label="Select genome vesion">
+           <option value="zv9" selected="true">zv9</option>
+         </param>
+       </when>
+       <when value="XTropicalis">
+         <param name="version" type="select" label="Select genome vesion">
+           <option value="xenTro2" >xenTro2</option>
+           <option value="xenTro3" selected="true">xenTro3</option>
+         </param>
+       </when>
+       <when value="Bacteria/MycoTube">
+         <param name="version" type="select" label="Select genome vesion">
+           <option value="H37Rv" selected="true">H37Rv</option>
+         </param>
+       </when>
+     </conditional>
+     <conditional name="use_reg">
+       <param name="use_reg_selector" type="select" label="Use transcriptomic data (up- and down- regulated genes)">
+         <option value="no" selected="true">No</option>
+         <option value="yes">Yes</option>
+       </param>
+       <when value="yes">
+         <param name="regfile" type="data" label="File with information about gene regulation" value="Regulation data" format="txt"/>
+       </when>
+     </conditional>
+     <param name="if_PDF" type="boolean" label="Do you want to have a PDF image (default PNG)?" truevalue="1" falsevalue="0" checked="False"/>
+   </inputs>
+   <outputs>
+     <data name="outputPNG" format="png" label="Peak location distribution (png)">
+       <filter>(if_PDF == 0)</filter>
+     </data>
+     <data name="outputPDF" format="pdf" label="Peak location distribution (pdf)">
+       <filter>(if_PDF == True)</filter>
+     </data>
+     <data name="stats" format="tabular" label="Peak location distribution (stats)"/>
+   </outputs>
+   <tests>
+     <test>
+       <param name="inputfile" value="peaks_test.bed"/>
+       <param name="use_control_selector" value="yes"/>
+       <param name="controlfile" value="peaks_control.bed"/>
+       <param name="left" value="1000"/>
+       <param name="right" value="50000"/>
+       <param name="input_organism_selector" value="Mouse"/>
+       <param name="version" value="mm9"/>
+       <param name="use_reg_selector" value="yes"/>
+       <param name="regfile" value="Probesets_FC1.5_10022011.txt"/>
+       <param name="if_PDF" value="1"/>
+       <output name="outputPDF" file="test_makeTSSdist_1.dat" ftype="pdf"/>
+       <output name="stats" file="test_makeTSSdist_2.dat" ftype="tabular"/>
+     </test>
+   </tests>
+   <help>
+**What it does**
+
+This tool creates a .png file with distribution of peaks around gene TSS
+
+  </help>
+  <citations>
+    <citation type="bibtex">@article{Boeva01102012,
+      author = {Boeva, Valentina and Lermine, Alban and Barette, Camille and Guillouf, Christel and Barillot, Emmanuel},
+      title = {Nebula—a web-server for advanced ChIP-seq data analysis},
+      volume = {28},
+      number = {19},
+      pages = {2517-2519},
+      year = {2012},
+      doi = {10.1093/bioinformatics/bts463},
+      URL = {http://bioinformatics.oxfordjournals.org/content/28/19/2517.abstract},
+      eprint = {http://bioinformatics.oxfordjournals.org/content/28/19/2517.full.pdf+html},
+      journal = {Bioinformatics}
+      }</citation>
+    </citations>
+</tool>
