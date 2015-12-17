@@ -94,7 +94,7 @@ databasePath=$(find / -type d -name files | grep database)
 mkdir -p $databasePath/nebulaAnnotations
 mkdir -p $databasePath/nebulaAnnotations/noIdenticalTransc
 nebulaAnnotationPath=$databasePath/nebulaAnnotations
-[ ! -f $nebulaAnnotationPath/noIdenticalTransc/$GENOME.noIdenticalTransc.txt ] && curl -o $nebulaAnnotationPath/noIdenticalTransc/$GENOME.noIdenticalTransc.txt -L https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/noIdenticalTransc/$GENOME.noIdenticalTransc.txt
+[ ! -f $nebulaAnnotationPath/noIdenticalTransc/$GENOME.noIdenticalTransc.txt ] && curl -s -o $nebulaAnnotationPath/noIdenticalTransc/$GENOME.noIdenticalTransc.txt -L https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/noIdenticalTransc/$GENOME.noIdenticalTransc.txt
 
 noIdenticalTranscPath=$nebulaAnnotationPath/noIdenticalTransc
 
