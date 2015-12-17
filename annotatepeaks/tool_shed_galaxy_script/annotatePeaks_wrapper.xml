@@ -16,8 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.-->
 <tool id="annotatePeaks" name="AnnotatePeaks" version="1.0">
   <description>Genomic annotation of Chip-Seq peaks</description>
   <requirements>
-    <requirement type="package" version="2.11.1">fontconfig</requirement>
-    <requirement type="package" version="3.1.2">R</requirement>
+    <container type="docker">institutcuriengsintegration/annotatepeaks:1.0</container>
   </requirements>
   <command interpreter="bash">
 #if str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "no" #annotatePeaks_wrapper.sh -f $inputfile -y $log -m $minScore -l $left -o $outputPNG -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "yes" # annotatePeaks_wrapper.sh -f $inputfile -y $log -c $controlfile -x $statsControl -o $outputPNG -m $minScore -l $left -r $right  -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "no" # annotatePeaks_wrapper.sh -y $log -f $inputfile -e $regfile -m $minScore -l $left -o $outputPNG -r $right  -d $DownGene -h $EnhLeft  -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "yes" # annotatePeaks_wrapper.sh -f $inputfile -c $controlfile -x $statsControl -l $left -y $log -o $outputPNG -m $minScore -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -e $regfile -p 0 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "no" #annotatePeaks_wrapper.sh -f $inputfile -y $log -m $minScore -l $left -o $outputPDF -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "yes" # annotatePeaks_wrapper.sh -f $inputfile -y $log -c $controlfile -x $statsControl -o $outputPDF -m $minScore -l $left -r $right  -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "no" # annotatePeaks_wrapper.sh -y $log -f $inputfile -e $regfile -m $minScore -l $left -o $outputPDF -r $right  -d $DownGene -h $EnhLeft  -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "yes" # annotatePeaks_wrapper.sh -f $inputfile -c $controlfile -x $statsControl -l $left -y $log -o $outputPDF -m $minScore -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -e $regfile -p 1#end if
@@ -103,7 +102,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.-->
     </data>
 
     <data name="stats" format="tabular" label="Annotated Peaks (ChIP)"/>
-    <data name="log" format="log" label=".LOG for Annotated Peaks"/>
+    <data name="log" format="txt" label="LOG for Annotated Peaks"/>
     <data name="statsControl" format="tabular" label="Annotated Peaks (Control)">
     <filter>(use_control['use_control_selector'] == 'yes')</filter>
     </data>
