@@ -94,7 +94,7 @@ noIdenticalTranscPath=$nebulaAnnotationPath/noIdenticalTransc
 
 
 if [ -r $REG ]; then
-  perl $DOCKER_PATHcrossBedWithGenes.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -f $CHIPFILE -reg $REG -o $OUTPUT.annotated
+  perl $DOCKER_PATH/crossBedWithGenes.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -f $CHIPFILE -reg $REG -o $OUTPUT.annotated
  else
   perl $DOCKER_PATH/crossBedWithGenes.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -f $CHIPFILE -o $OUTPUT.annotated
 fi
