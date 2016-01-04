@@ -81,7 +81,7 @@ DOCKER_PATH='/usr/bin/maketssdist'
 
 
 OUTPUT_DIR=`dirname $OUTPUT`
-R_PATH='/usr/bin/R-3.1.0/bin/Rscript --slave '
+R_PATH='Rscript --slave '
 
 databasePath=$(find / -type d -name files | grep database)
 
