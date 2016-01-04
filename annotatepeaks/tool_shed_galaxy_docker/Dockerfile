@@ -12,8 +12,9 @@
 # Run Cmd:          docker run --rm -it institutcuriengsintegration/annotatepeaks:1.0 <options> <files>
 #################################################################
 
-# Set the base image to Ubuntu
+# Set the base image to Ubuntu and R 3.1.2
 FROM ubuntu:14.04
+FROM r-base:3.1.2
 
 #############
 
@@ -36,15 +37,6 @@ RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/annotatepeaks
 WORKDIR /usr/bin/annotatePeaks
 RUN tar -xvf tool_shed_galaxy_script.tar.gz && rm tool_shed_galaxy_script.tar.gz
 RUN mv tool_shed_galaxy_script/* . && rm -rf tool_shed_galaxy_script annotatePeaks_wrapper* tool_dependencies.xml
-
-RUN wget http://cran.r-project.org/src/base/R-3/R-3.1.0.tar.gz -P /usr/bin
-RUN tar -zxvf /usr/bin/R-3.1.0.tar.gz -C /usr/bin/
-RUN rm -rf /usr/bin/R-3.1.0.tar.gz
-WORKDIR /usr/bin/R-3.1.0
-RUN ./configure --with-readline=no
-RUN make
-
-RUN ln -s /usr/bin/R-3.1.0/bin/R /usr/bin/R
 
 WORKDIR /usr/bin/annotatePeaks
 
