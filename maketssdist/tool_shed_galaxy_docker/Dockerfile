@@ -39,7 +39,7 @@ RUN tar -xvf tool_shed_galaxy_script.tar.gz && rm tool_shed_galaxy_script.tar.gz
 RUN mv tool_shed_galaxy_script/* . && rm -rf tool_shed_galaxy_script makeTSSdist_wrapper* tool_dependencies.xml
 
 RUN echo "install.packages(\"Hmisc\", repos=\"http://cran.rstudio.com/\", dependencies=TRUE)" > install_Hmisc.R
-RUN /usr/bin/R-3.1.0/bin/Rscript --slave install_Hmisc.R
+RUN Rscript --slave install_Hmisc.R
 RUN rm install_Hmisc.R
 
 WORKDIR /usr/bin/maketssdist
