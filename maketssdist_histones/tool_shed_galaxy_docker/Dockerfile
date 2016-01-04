@@ -7,13 +7,14 @@
 # Website:          http://nebula.curie.fr
 # Tags:             NGS: Peak Annotation
 # Provides:         Nebula
-# Build Cmd:        docker build --rm -t institutcuriengsintegration/maketssdisthistones:1.0 .
+# Build Cmd:        docker build -t institutcuriengsintegration/maketssdisthistones:1.0 -f Dockerfile .
 # Pull Cmd:         docker pull institutcuriengsintegration/maketssdisthistones:1.0
 # Run Cmd:          docker run --rm -it institutcuriengsintegration/maketssdisthistones:1.0 <options> <files>
 #################################################################
 
-# Set the base image to Ubuntu
+# Set the base image to Ubuntu and R 3.1.2
 FROM ubuntu:14.04
+FROM r-base:3.1.2
 
 #############
 
@@ -37,17 +38,17 @@ WORKDIR /usr/bin/maketssdist_histones
 RUN tar -xvf tool_shed_galaxy_script.tar.gz && rm tool_shed_galaxy_script.tar.gz
 RUN mv tool_shed_galaxy_script/* . && rm -rf tool_shed_galaxy_script makeTSSdist_histones_wrapper* tool_dependencies.xml
 
-RUN wget http://cran.r-project.org/src/base/R-3/R-3.1.0.tar.gz -P /usr/bin
-RUN tar -zxvf /usr/bin/R-3.1.0.tar.gz -C /usr/bin/
-RUN rm -rf /usr/bin/R-3.1.0.tar.gz
-WORKDIR /usr/bin/R-3.1.0
-RUN ./configure --with-readline=no
-RUN make
+#RUN wget http://cran.r-project.org/src/base/R-3/R-3.1.0.tar.gz -P /usr/bin
+#RUN tar -zxvf /usr/bin/R-3.1.0.tar.gz -C /usr/bin/
+#RUN rm -rf /usr/bin/R-3.1.0.tar.gz
+#WORKDIR /usr/bin/R-3.1.0
+#RUN ./configure --with-readline=no
+#RUN make
 
-RUN ln -s /usr/bin/R-3.1.0/bin/R /usr/bin/R
+#RUN ln -s /usr/bin/R-3.1.0/bin/R /usr/bin/R
 
 RUN echo "install.packages(\"Hmisc\", repos=\"http://cran.rstudio.com/\", dependencies=TRUE)" > install_Hmisc.R
-RUN /usr/bin/R-3.1.0/bin/Rscript --slave install_Hmisc.R
+RUN Rscript --slave install_Hmisc.R
 RUN rm install_Hmisc.R
 
 WORKDIR /usr/bin/maketssdist_histones
