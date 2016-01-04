@@ -1,0 +1,99 @@
+<tool id="makeTSSdist_histones" name="Get peak distribution around TSS (Histones)" version="1.0">
+  <description>Uses information about peak boundaries</description>
+  <command interpreter="bash">
+
+#if str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "no" #makeTSSdist_wrapper_hist.sh -f $inputfile -l $left -o $outputPNG -r $right -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "no" #makeTSSdist_wrapper_hist.sh -f $inputfile -l $left -o $outputPDF -r $right -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "yes" # makeTSSdist_wrapper_hist.sh -f $inputfile -c $controlfile -o $outputPNG -l $left -r $right -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "yes" # makeTSSdist_wrapper_hist.sh -f $inputfile -c $controlfile -o $outputPDF -l $left -r $right -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "no" # makeTSSdist_wrapper_hist.sh -f $inputfile -e $regfile -l $left -o $outputPNG -r $right -u $stats -v $input_organism.version -p 0 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "no" # makeTSSdist_wrapper_hist.sh -f $inputfile -e $regfile -l $left -o $outputPDF -r $right -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "yes" #makeTSSdist_wrapper_hist.sh -f $inputfile -c $controlfile -l $left -o $outputPNG -r $right -u $stats -v $input_organism.version -e $regfile -p 0 #else # makeTSSdist_wrapper_hist.sh -f $inputfile -c $controlfile -l $left -o $outputPDF -r $right -u $stats -v $input_organism.version -e $regfile -p 1 #end if
+ </command>
+   <inputs>
+   
+    <param name="inputfile" type="data" label="ChIP peaks" value="ChIP peaks File" format="bed"/>
+
+
+   <conditional name="use_control">
+    <param name="use_control_selector" type="select" label="Use control data">
+        <option value="no" selected="true">No</option>
+        <option value="yes">Yes</option>
+    </param>
+    <when value="yes">
+    <param name="controlfile" type="data" label="Control peaks" value="Control peaks File" format="bed"/>
+    </when>    
+    </conditional>
+
+    <param name="left" type="integer" label="Step (bp)" value="1000"/>
+    <param name="right" type="integer" label="length of the region +-TSS to consider (bp)" value="50000"/>
+
+<conditional name="input_organism">
+    <param name="input_organism_selector" type="select" label="Select organism">
+        <option value="Human" selected="true">Homo sapiens</option>
+        <option value="Mouse">Mus musculus</option>
+        <option value="Zebrafish">Zebrafish (Danio rerio)</option>   
+        <option value="XTropicalis">X.Tropicalis</option> 
+        <option value="Bacteria/MycoTube">M. tuberculosis</option>    
+	<option value="Celegans">C. elegans</option>        
+    </param>
+    <when value="Human">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="hg19" selected="true">hg19</option>
+        <option value="hg18">hg18</option>
+    </param>
+    </when>
+    <when value="Mouse">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="mm8" >mm8</option>
+        <option value="mm9" selected="true">mm9</option>
+        <option value="mm10" >mm10</option>
+    </param>
+    </when>
+    <when value="Zebrafish">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="zv9" selected="true">zv9</option>
+    </param>
+    </when>
+    <when value="XTropicalis">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="xenTro2" >xenTro2</option>
+        <option value="xenTro3" selected="true">xenTro3</option>
+    </param>
+    </when>
+    <when value="Bacteria/MycoTube">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="H37Rv" selected="true">H37Rv</option>
+    </param>
+    </when>
+    <when value="Celegans">
+     <param name="version" type="select" label="Select genome vesion">
+        <option value="ce10" selected="true">ce10</option>
+    </param>
+    </when>
+</conditional>
+
+
+
+   <conditional name="use_reg">
+    <param name="use_reg_selector" type="select" label="Use transcriptomic data (up- and down- regulated genes)">
+        <option value="no" selected="true">No</option>
+        <option value="yes">Yes</option>
+    </param>
+    <when value="yes">
+    <param name="regfile" type="data" label="File with information about gene regulation" value="Regulation data" format="txt"/>
+    </when>    
+    </conditional>
+
+   <param name="if_PDF" type="boolean" label="Do you want to have a PDF image (default PNG)?" truevalue="1" falsevalue="0" checked="False"/>
+  </inputs>
+  <outputs>
+    <data name="outputPNG" format="png" label="Peak location distribution (png)">
+    <filter>(if_PDF == 0)</filter>
+    </data>
+    <data name="outputPDF" format="pdf" label="Peak location distribution (pdf)">
+    <filter>(if_PDF == True)</filter>
+    </data>
+    <data name="stats" format="tabular" label="Peak location distribution (stats)"/>   
+  </outputs>
+  <help>
+**What it does**
+
+This tool creates a .png file with distribution of peaks around gene TSS
+
+  </help>
+</tool>
