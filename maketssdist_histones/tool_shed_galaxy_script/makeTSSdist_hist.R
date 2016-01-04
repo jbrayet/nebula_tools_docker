@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 #usage $0 STEP RIGHT chipPeaks outputFile.png output.txt [controlPeaks] [1 for pdf]
 args <- commandArgs()
 print (args)
@@ -21,7 +23,7 @@ if (length(args)==9 & args[9]==1) {
 	ifPDF=1
 }
 
-library(Hmisc)
+suppressMessages(library(Hmisc))
 
 if (length(args)>=9 & args[9]!=1 & args[9]!=0) {
   dataTable <-read.table(file=paste(args[9],".genes.ClosestPeakDist", sep=""), header=TRUE);
