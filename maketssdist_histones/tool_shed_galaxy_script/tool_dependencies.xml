@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tool_dependency>
     <package name="docker_maketssdist_histones" version="0.1">
-        <repository changeset_revision="16b197423dce" name="docker_maketssdist_histones" owner="jbrayet" toolshed="https://testtoolshed.g2.bx.psu.edu" />
+        <repository changeset_revision="be8c78c10085" name="docker_maketssdist_histones" owner="jbrayet" toolshed="https://testtoolshed.g2.bx.psu.edu" />
     </package>
 </tool_dependency>
