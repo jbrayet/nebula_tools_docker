@@ -1,0 +1,41 @@
+<!--annotateGenes - developed by Jocelyn Brayet <jocelyn.brayet@curie.fr>
+Copyright (C) 2015  Institut Curie
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.-->
+<tool id="extractCentralRegions" name="Extract regions around peak maxima for a .bed file with peak coordinates" version="1.0">
+  <description> </description>
+  <requirements>
+    <container type="docker">institutcuriengsintegration/extractcentralregions:1.0</container>
+  </requirements>
+  <command interpreter="perl">extractCentralRegions.pl -f $inputfile -l $left -o $output -head $has_header
+ </command>
+   <inputs>
+   
+    <param name="inputfile" type="data" label="ChIP peaks" value="ChIP peaks File" format="bed,txt"/>   
+    <param name="has_header" type="select" label="Your data file has a header?">
+        <option value="0" selected="true">No</option>
+        <option value="1">Yes</option>
+    </param>  
+    <param name="left" type="integer" label="Legth of the central region" value="300"/> 
+  </inputs>
+  <outputs>   
+    <data name="output" format="bed" label="central regions for ${inputfile.name}"/>      
+  </outputs>    
+  <help>
+**What it does**
+
+This tool extract central regions of ChIP-seq peaks
+
+  </help>
+</tool>
