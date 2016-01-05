@@ -1,6 +1,6 @@
-args <- commandArgs()
-input <- args[4]
-pngFile <- args[5]
+args <- commandArgs(TRUE)
+input <- args[2]
+pngFile <- args[3]
 dataTable <-read.table(file=input, header=TRUE);
 chip.data<-data.frame(dataTable)
 ifReg <- 0
@@ -11,17 +11,17 @@ if (length(unique(chip.data$Reg))>1) {
 ifPDF <- 0
 bootstrap <- 1
 
-if (length(args)>=8) {
-	ifPDF=args[8]
-	bootstrap=args[9]
+if (length(args)>=6) {
+	ifPDF=args[6]
+	bootstrap=args[7]
 }
-if (length(args)==7 & args[7]==1) {
+if (length(args)==5 & args[5]==1) {
 	ifPDF=1
 }
 
 ifControl <- 0
-if (length(args)>=7 & args[7]!=1 & args[7]!=0) {
-  dataTable <-read.table(file=args[7], header=TRUE);
+if (length(args)>=5 & args[5]!=1 & args[5]!=0) {
+  dataTable <-read.table(file=args[5], header=TRUE);
   control.data<-data.frame(dataTable)
   ifControl <- 1
 
@@ -36,7 +36,7 @@ error.bar <- function(x, y, upper, lower=upper, length=0.1,...){
 
 
 
-logFile <- args[6]
+logFile <- args[4]
 sink(logFile, append=FALSE, split=FALSE)
 
 if (ifReg & ifControl) {
@@ -150,7 +150,7 @@ if (ifControl) {
 	for (fileNumber in 1:bootstrap) {
 
 		if (fileNumber>=2) {
-			dataTable <-read.table(file=paste(args[7],fileNumber,sep=""), header=TRUE);
+			dataTable <-read.table(file=paste(args[5],fileNumber,sep=""), header=TRUE);
  			control.data<-data.frame(dataTable)
 		}
 
