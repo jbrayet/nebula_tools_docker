@@ -1,0 +1,152 @@
+<tool id="hmcan" name="HMCan" version="1.11">
+	<description>Histone Modification detection in Cancer samples</description>
+	<requirements>
+    	<container type="docker">institutcuriengsintegration/hmcan:1.0</container>
+	</requirements>
+	<command interpreter="python">hmcan_wrapper.py '${input_chip_file}' '${input_control_file}' '${hmcan_config_file}' '${gccount_config_file}' '${project_name}' '${output_peaks_file}' '${output_regions_file}' '${output_density_file}' '${output_posterior_proba_file}' '${hmcan_log_report}' '$genome[ 'chr_len_file']' ${file_format}  2> '${hmcan_log_report}'</command>
+
+
+<!-- 
+###NoteToSelf:
+in this version, you still need to :
+-Get the correct paths to mappability.GEM
+- go to hmcan_wrapper.py
+- set the correct paths to binary files (HMCAN, GCCOUNT)
+-->   
+
+	<!-- INPUT DESCRIPTION -->
+	<inputs> 
+		<!-- project name-->
+		<param name="project_name" type="text" size="20" label="Project name" help="NOTE: spaces are not allowed.">
+			<validator type="empty_field" message="You must specify a file name."/>
+		</param>
+		
+		<!-- input files NB: format= only if attribute type is data, formats (bed,sam..) are contained in datatypes_conf.xml.sample f-->
+		<param name="input_chip_file" type="data" format="bed,sam,bam" label="ChIP seq alignment file"/>
+		<param name="input_control_file" type="data" format="bed,sam,bam" label="Control alignment file"/>		
+		<!-- format-->
+		<param name="file_format" type="select" label="Select alignment format">
+			<option value="bed" selected="true">BED</option>
+			<option value="bam">BAM</option>
+			<option value="sam">SAM</option>	
+		</param>
+		<!-- lengths-->		
+		<param name="min_len" type="integer" value="145" label="Minumum fragment length used in the ChIP-seq experiment"/>
+		<param name="med_len" type="integer" value="150" label="Median fragment length used in the ChIP-seq experiment"/>
+		<param name="max_len" type="integer" value="155" label="Maximum fragment length used in the ChIP-seq experiment"/>
+		<param name="bin_size" type="integer" value="50" label="Bin size"/>
+		<param name="merge_dist" type="integer" value="2000" label="Merge distance" help=" Maximum distance to merge single peaks into a region.This parameter should be set with respect to the nature of the mark; narrow marks (e.g H3K4me1, H3K4me3) can cover 200bp-2Kb, wide marks (e.g. H3K36me3, H3K27me3) can cover 10Kb-100Kb."/>
+		
+		<param name="p_value" type="float" value="0.01" label="P Value"/>
+		<param name="input_blacklist_file" type="data" format="bed" label=".BED file with blacklist regions" help="An example of such a bed file for hg19 can be found here: http://xfer.curie.fr/get/GaQHuEopJTw/hg19-blacklist.bed"/>
+		<!-- SELECT GENOME UNDER STUDY (hg19, hg18, hg38,mm9, mm10)-->
+		<!-- Each genome is associated with :
+		  ** Mappability Track 
+		  ** chr_length file: -->
+		<conditional name="genome">
+			<param name="genome_selector" type="select" label="Select the version of the genome under study">
+				<option value="hg19" selected="true">hg19</option>	
+				<option value="mm9">mm9</option>
+			</param>
+			<!-- set the correct genome_path / mappability / chr_len for all genomes! -->
+			<when value="hg19">
+				<param name="genome_path" type="hidden" value="/galaxy-central/genomes/hg19/chromosomes"/>
+				<param name="mappability" type="hidden" value="/galaxy-central/genomes/hg19/out50m2_hg19.gem.mappability"/> 
+				<param name="chr_len_file" type="hidden" value="/galaxy-central/genomes/hg19/hg19.len"/>
+			</when>	
+			
+			<when value="mm9">
+				<param name="genome_path" type="hidden" value="/galaxy-central/genomes/mm9/chromosomes"/>
+				<param name="mappability" type="hidden" value="/galaxy-central/genomes/mm9/out50m2_mm9.gem"/> 
+				<param name="chr_len_file" type="hidden" value="/galaxy-central/genomes/mm9/mm9.len"/>
+			</when>
+			
+		</conditional>
+		<!-- Booleans  + LOGING-->
+		<param name="print_wig" type="boolean" truevalue="True" falsevalue="False" checked="true" label="Print density profil in WIG file" />
+		<param name="print_posterior_proba" type="boolean" truevalue="True" falsevalue="False" checked="true" label="Print bins posterior probabilites in WIG format" />
+		<param name="print_logging" type="boolean" truevalue= "True" falsevalue="False" checked="true" label="Print HMCan log"/>
+		<!-- HMM advanced-->
+		<conditional name="option_type">
+			<param name="option_type_selector" type="select" label="Advanced options">
+				<option value="basic" selected="true">Hide advanced options</option>
+				<option value="advanced">Show advanced options</option>
+			</param>
+			<!-- WHENS-->
+			<when value="basic"/>
+			<when value="advanced"> <!-- if advanced create HHM parameters form-->
+				<param name="max_iter" type="integer" value="20" label="Maximun interation for HMCan algorithm"/>
+				<param name="iteration_score_threshold" type="integer" value="2" label="Iteration score threshold" help="minimum score to accept a peak into the next iteration"/>
+				<param name="final_score_threshold" type="integer" value="0" label="Score threshold" help="score threshold to report peak or regions"/>
+			</when>
+			
+		</conditional>
+	</inputs>
+	
+	<!-- OUTPUT DESCRIPTION -->
+	<outputs>
+		<data name="output_peaks_file" format="bed" label="${project_name} histone peaks (bed)"/> 
+		<data name="output_regions_file" format="bed" label="${project_name} histone regions (bed)"/>
+		
+		<!-- <filter>if this is true, data will be created as normal</filter> -->
+		<data name="output_density_file" format="wig" label="${project_name} density profile (wig)">
+			<filter>print_wig==True</filter>
+		</data>
+		
+		<data name="output_posterior_proba_file" format="wig" label="${project_name} peaks prosterior probability (wig)">
+			<filter>print_posterior_proba==True</filter>
+		</data>
+		
+		<data name="hmcan_log_report" format="txt" label="${tool.name} log report (txt)">
+			<filter> print_logging==True</filter>
+		</data>
+	</outputs>
+
+	<configfiles>
+		<configfile name="hmcan_config_file">format ${file_format}
+GCIndex  
+genomePath $genome['genome_path']  <!--  /data/tmp/amira/example_seq-->     
+minLength ${min_len}
+medLength ${med_len}
+maxLength ${max_len}
+smallBinLength ${bin_size}
+largeBinLength 
+pvalueThreshold ${p_value}
+mergeDistance ${merge_dist}
+blackListFile ${input_blacklist_file}
+#if str($option_type ['option_type_selector'])=="advanced":
+iterationThreshold ${option_type['iteration_score_threshold']} 	
+finalThreshold ${option_type['final_score_threshold']}
+maxIter ${option_type['max_iter']} 
+#else:
+iterationThreshold 5
+finalThreshold 10
+maxIter 20		
+#end if		
+PrintWig ${print_wig} 
+PrintPosterior ${print_posterior_proba}
+		</configfile>
+		<configfile name="gccount_config_file">[general]
+		
+window =  
+step = 
+outputDir = . 
+chrFiles = $genome[ 'genome_path' ]
+chrLenFile = $genome[ 'chr_len_file' ]
+gemMappabilityFile = $genome['mappability' ]
+		</configfile>
+	</configfiles>
+  
+	<help>
+**What it does**
+
+HMCan detects histone modifications in cancer samples.
+
+**Cite HMCan**
+
+If you use this tool, please cite : HMCan: a method for detecting chromatin modifications in cancer samples using ChIP-seq data.Haitham Ashoor; Aurelie Herault; Aurelie Kamoun; Francois Radvanyi; Vladimir B. Bajic; Emmanuel Barillot; Valentina Boeva.Bioinformatics 2013; doi: 10.1093/bioinformatics/btt524
+   
+	</help>
+</tool>
+
+
