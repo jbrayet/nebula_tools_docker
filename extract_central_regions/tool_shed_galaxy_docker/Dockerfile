@@ -19,7 +19,7 @@ FROM ubuntu:14.04
 
 RUN apt-get update && \
     apt-get install -y \
-      build-essential \
+      build-essential && \
     apt-get clean && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
