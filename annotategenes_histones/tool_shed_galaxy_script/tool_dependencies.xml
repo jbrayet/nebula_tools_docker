@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tool_dependency>
     <package name="docker_annotategenes_histones" version="0.1">
-        <repository changeset_revision="3004b0986448" name="docker_annotategenes_histones" owner="jbrayet" toolshed="https://testtoolshed.g2.bx.psu.edu" />
+        <repository changeset_revision="790c9623fdc9" name="docker_annotategenes_histones" owner="jbrayet" toolshed="https://testtoolshed.g2.bx.psu.edu" />
     </package>
 </tool_dependency>

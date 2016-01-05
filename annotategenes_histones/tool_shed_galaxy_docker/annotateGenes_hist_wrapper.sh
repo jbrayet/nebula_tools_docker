@@ -105,11 +105,11 @@ noIdenticalTranscPath=$nebulaAnnotationPath/noIdenticalTransc
 echo "ChIP:" >$LOG
 
 if [ -r $REG ]; then
-  echo "1:  perl $DOCKER_PATH/geneAnnotation_hist.pl -g $LOCAL_DIR/$GENOME.noIdenticalTransc.txt -tf $CHIPFILE -selG $REG -o $OUTSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE" >> $LOGTMP
-  perl $DOCKER_PATH/geneAnnotation_hist.pl -g $LOCAL_DIR/$GENOME.noIdenticalTransc.txt -tf $CHIPFILE -selG $REG -o $OUTSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
+  echo "1:  perl $DOCKER_PATH/geneAnnotation_hist.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -tf $CHIPFILE -selG $REG -o $OUTSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE" >> $LOGTMP
+  perl $DOCKER_PATH/geneAnnotation_hist.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -tf $CHIPFILE -selG $REG -o $OUTSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
  else
-  echo "2: perl $DOCKER_PATH/geneAnnotation_hist.pl -g $LOCAL_DIR/$GENOME.noIdenticalTransc.txt -tf $CHIPFILE -o $OUTSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE " >> $LOGTMP
-  perl $DOCKER_PATH/geneAnnotation_hist.pl -g $LOCAL_DIR/$GENOME.noIdenticalTransc.txt -tf $CHIPFILE -o $OUTSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
+  echo "2: perl $DOCKER_PATH/geneAnnotation_hist.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -tf $CHIPFILE -o $OUTSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE " >> $LOGTMP
+  perl $DOCKER_PATH/geneAnnotation_hist.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -tf $CHIPFILE -o $OUTSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
 fi
 
 
@@ -121,17 +121,17 @@ echo "Control:" >>$LOG
    echo "   perl $DOCKER_PATH/createControlPeakSubSet.pl -f $CHIPFILE -c $CONTROLFILE -o $CONTROLFILE.tmp -n $BOOTSTRAP " >>$LOGTMP
    perl $DOCKER_PATH/createControlPeakSubSet.pl -f $CHIPFILE -c $CONTROLFILE -o $CONTROLFILE.tmp -n $BOOTSTRAP >>$LOGTMP 2>>$LOGTMP
   if [ -r $REG ]; then
-    echo "5: perl $DOCKER_PATH/geneAnnotation_hist.pl -g $LOCAL_DIR/$GENOME.noIdenticalTransc.txt -tf $CONTROLFILE.tmp -selG $REG -o $CONTROLSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE ">> $LOGTMP
-    perl $DOCKER_PATH/geneAnnotation_hist.pl -g $LOCAL_DIR/$GENOME.noIdenticalTransc.txt -tf $CONTROLFILE.tmp -selG $REG -o $CONTROLSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
+    echo "5: perl $DOCKER_PATH/geneAnnotation_hist.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -tf $CONTROLFILE.tmp -selG $REG -o $CONTROLSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE ">> $LOGTMP
+    perl $DOCKER_PATH/geneAnnotation_hist.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -tf $CONTROLFILE.tmp -selG $REG -o $CONTROLSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
 	for (( i=2; i<=$BOOTSTRAP; i++ ))
 	do
-           perl $DOCKER_PATH/geneAnnotation_hist.pl -g $LOCAL_DIR/$GENOME.noIdenticalTransc.txt -tf $CONTROLFILE.tmp$i -selG $REG -o $CONTROLSTAT$i  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
+           perl $DOCKER_PATH/geneAnnotation_hist.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -tf $CONTROLFILE.tmp$i -selG $REG -o $CONTROLSTAT$i  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
 	done
   else
-    perl $DOCKER_PATH/geneAnnotation_hist.pl -g $LOCAL_DIR/$GENOME.noIdenticalTransc.txt -tf $CONTROLFILE.tmp -o $CONTROLSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
+    perl $DOCKER_PATH/geneAnnotation_hist.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -tf $CONTROLFILE.tmp -o $CONTROLSTAT  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
     for (( i=2; i<=$BOOTSTRAP; i++ ))
      do
-        perl $DOCKER_PATH/geneAnnotation_hist.pl -g $LOCAL_DIR/$GENOME.noIdenticalTransc.txt -tf $CONTROLFILE.tmp$i -o $CONTROLSTAT$i  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
+        perl $DOCKER_PATH/geneAnnotation_hist.pl -g $noIdenticalTranscPath/$GENOME.noIdenticalTransc.txt -tf $CONTROLFILE.tmp$i -o $CONTROLSTAT$i  -lp $LEFTPROM -rightp $RIGHTPROM -enh $ENH -dg $DOWNGENE  >>$LOG 2>> $LOGTMP
     done
 
   fi
