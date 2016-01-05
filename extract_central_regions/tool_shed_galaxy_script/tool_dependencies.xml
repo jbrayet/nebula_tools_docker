@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tool_dependency>
     <package name="docker_extractcentralregions" version="0.1">
-        <repository changeset_revision="790c9623fdc9" name="docker_extractcentralregions" owner="jbrayet" toolshed="https://testtoolshed.g2.bx.psu.edu" />
+        <repository changeset_revision="dcb4c0ea9352" name="docker_extractcentralregions" owner="jbrayet" toolshed="https://testtoolshed.g2.bx.psu.edu" />
     </package>
 </tool_dependency>

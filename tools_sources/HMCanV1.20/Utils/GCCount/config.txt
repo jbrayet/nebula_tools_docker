@@ -1,0 +1,16 @@
+[general]
+
+window = 50000
+step = 50000
+
+#output directory
+outputDir = .
+
+#directory with fasta files
+chrFiles = 
+
+#file with chromosome lengths
+chrLenFile = 
+
+#GEM mappability file
+gemMappabilityFile =
