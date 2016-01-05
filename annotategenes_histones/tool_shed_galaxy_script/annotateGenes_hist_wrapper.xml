@@ -1,5 +1,23 @@
+<!--annotateGenes - developed by Jocelyn Brayet <jocelyn.brayet@curie.fr>
+Copyright (C) 2015  Institut Curie
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.-->
 <tool id="annotateGenes_histones" name="Annotation of genes with ChIP-seq peaks (histones)" version="1.0">
   <description>Caclulates statistics for TSS and gene body</description>
+  <requirements>
+    <container type="docker">institutcuriengsintegration/annotategeneshistones:1.0</container>
+  </requirements>
    <command interpreter="bash">
 #if str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "no" #annotateGenes_hist_wrapper.sh -f $inputfile -y $log  -l $left -o $outputPNG -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 0  #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "yes" # annotateGenes_hist_wrapper.sh -f $inputfile -y $log -c $controlfile -b $use_control.bootstraps -x $statsControl -o $outputPNG -l $left -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 0  #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "no" # annotateGenes_hist_wrapper.sh -y $log -f $inputfile -e $regfile  -l $left -o $outputPNG -r $right  -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 0  #elif str( $if_PDF ) == '0' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "yes" # annotateGenes_hist_wrapper.sh -f $inputfile -c $controlfile -b $use_control.bootstraps -x $statsControl -l $left -y $log -o $outputPNG  -r $right -d $DownGene  -h $EnhLeft -u $stats -v $input_organism.version -e $regfile -p 0  #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "no" #annotateGenes_hist_wrapper.sh -f $inputfile -y $log -l $left -o $outputPDF -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "no" and $use_control.use_control_selector == "yes" # annotateGenes_hist_wrapper.sh -f $inputfile -y $log -c $controlfile -b $use_control.bootstraps -x $statsControl -o $outputPDF -l $left -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "no" # annotateGenes_hist_wrapper.sh -y $log -f $inputfile -e $regfile  -l $left -o $outputPDF -r $right  -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -p 1 #elif str( $if_PDF ) == '1' and $use_reg.use_reg_selector == "yes" and $use_control.use_control_selector == "yes" # annotateGenes_hist_wrapper.sh -f $inputfile -c $controlfile -b $use_control.bootstraps -x $statsControl -l $left -y $log -o $outputPDF -r $right -d $DownGene -h $EnhLeft -u $stats -v $input_organism.version -e $regfile -p 1 #end if
  </command>
