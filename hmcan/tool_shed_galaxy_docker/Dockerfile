@@ -22,7 +22,6 @@ RUN apt-get update && \
     apt-get install -y \
       build-essential \
       wget \
-      git \
       samtools && \
     apt-get clean && \
     apt-get purge && \
@@ -30,7 +29,9 @@ RUN apt-get update && \
 
 RUN mkdir /usr/bin/HMCan
 WORKDIR /usr/bin/HMCan
-RUN git clone https://github.com/jbrayet/nebula_tools_docker/tree/master/tools_sources/HMCanV1.20
+RUN wget https://github.com/jbrayet/nebula_tools_docker/blob/master/tools_sources/HMCanV1.20.tar.gz -P /usr/bin/HMCan
+RUN tar -zxvf HMCanV1.20.tar.gz 
+RUN rm -f HMCanV1.20.tar.gz
 
 ##################### INSTALLATION END #####################
 

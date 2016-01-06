@@ -86,8 +86,8 @@ def main():
 	format = sys.argv[12]
 	
 	#binary files
-	GCCOUNT="/bioinfo/local/build/HMCanV1.20/Utils/GCCount/gccount"
-	HMCAN="/bioinfo/local/build/HMCanV1.20/src/HMCan"  
+	GCCOUNT="/usr/bin/HMCan/HMCanV1.20/Utils/GCCount/gccount"
+	HMCAN="/usr/bin/HMCan/HMCanV1.20/src/HMCan"  
 	
 	# create tmp dir.Returns absolute path to a created tmp_dir  
 	tmp_dir=tempfile.mkdtemp()
