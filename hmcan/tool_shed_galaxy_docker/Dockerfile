@@ -29,7 +29,7 @@ RUN apt-get update && \
 
 RUN mkdir /usr/bin/HMCan
 WORKDIR /usr/bin/HMCan
-RUN wget https://github.com/jbrayet/nebula_tools_docker/blob/master/tools_sources/HMCanV1.20.tar.gz -P /usr/bin/HMCan
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/HMCanV1.20.tar.gz -P /usr/bin/HMCan
 RUN tar -zxvf HMCanV1.20.tar.gz 
 RUN rm -f HMCanV1.20.tar.gz
 
