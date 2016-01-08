@@ -9,7 +9,7 @@ BUILD=$6
 MAPFILE=$7
 ANNOPATH=$8
 
-ln -s $FILEPATH/$BUILD/seq/$BUILD.fa $ANNOPATH/$BUILD.fa
+ln -sf $FILEPATH/$BUILD/seq/$BUILD.fa $ANNOPATH/$BUILD.fa
 
 if [ "$FAIFILE" == 'y' ]
 then
@@ -49,14 +49,17 @@ if [ "$CHROFILE" == 'y' ]
 then
 
         #Split by Chromosomes
-        perl splitChr.pl $ANNOPATH/$BUILD.fa
-
+        perl splitChr.pl $BUILD.fa $ANNOPATH $ANNOPATH/chromosomes
+        
 fi
 
 if [ "$MAPFILE" == 'y' ]
 then
 
         #Create genome mappability file
+        chmod +x gem-indexer
+        chmod +x gem-mappability
+        chmod +x gem-indexer_fasta2meta+cont
         ./gem-indexer -i $ANNOPATH/$BUILD.fa -o $ANNOPATH/gem_index
         ./gem-mappability -I $ANNOPATH/gem_index -l 50 -o $ANNOPATH/out50m2_$BUILD.gem.mappability
 
