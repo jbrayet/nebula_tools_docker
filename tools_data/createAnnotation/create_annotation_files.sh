@@ -57,9 +57,12 @@ if [ "$MAPFILE" == 'y' ]
 then
 
         #Create genome mappability file
+        PATH=$PATH:/usr/bin/HMCan
         chmod +x gem-indexer
         chmod +x gem-mappability
         chmod +x gem-indexer_fasta2meta+cont
+        chmod +x gem-indexer_bwt-dna
+        chmod +x gem-indexer_generate
         ./gem-indexer -i $ANNOPATH/$BUILD.fa -o $ANNOPATH/gem_index
         ./gem-mappability -I $ANNOPATH/gem_index -l 50 -o $ANNOPATH/out50m2_$BUILD.gem.mappability
 
