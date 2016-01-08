@@ -1,69 +1,63 @@
 #!/usr/bin/env bash
 
-while getopts "s:l:d:c:p:b:m:" optionName; do
-case "$optionName" in
+FAIFILE=$1
+LENFILE=$2
+DICTFILE=$3
+CHROFILE=$4
+FILEPATH=$5
+BUILD=$6
+MAPFILE=$7
+ANNOPATH=$8
 
-s) FAIFILE="$OPTARG";;
-l) LENFILE="$OPTARG";;
-d) DICTFILE="$OPTARG";
-c) CHROFILE="$OPTARG";;
-p) FILEPATH="$OPTARG";;
-b) BUILD="$OPTARG";;
-m) MAPFILE="$OPTARG";;
+ln -s $FILEPATH/$BUILD/seq/$BUILD.fa $ANNOPATH/$BUILD.fa
 
-esac
-done
+if [ "$FAIFILE" == 'y' ]
+then
 
-if [[ $FAIFILE == 1 ]]; then
-
-	#Create .fai file
-	samtools faidx $FILEPATH/$BUILD/seq/$BUILD.fa
+        #Create .fai file
+        samtools faidx $ANNOPATH/$BUILD.fa
 
 fi
 
-if [[ $LENFILE == 1 ]]; then
+if [ "$LENFILE" == 'y' ]
+then
 
-	#Create .len file
-	while read line
-	do      
-    	    if [[ $line != "" ]]; then
+        #Create .len file
+        while read line
+        do
+            if [[ $line != "" ]]; then
 
-        	        CHR=`echo $line | awk '{print $1}'`
-            	    LENGTH=`echo $line | awk '{print $2}'`
-                
-                	echo "$CHR	$LENGTH" >> $FILEPATH/$BUILD/seq/$BUILD.len
+                        CHR=`echo $line | awk '{print $1}'`
+                        LENGTH=`echo $line | awk '{print $2}'`
+                        echo "$CHR      $LENGTH" >> $ANNOPATH/$BUILD.len
 
-        	fi
+                fi
 
-	done < $FILEPATH/$BUILD/seq/$BUILD.fa.fai
-
-fi
-
-if [[ $DICTFILE == 1 ]]; then
-
-	#Create .dict file
-	java -jar CreateSequenceDictionary.jar R=$FILEPATH/$BUILD/seq/$BUILD.fa O=$FILEPATH/$BUILD/$BUILD.dict
+        done < $ANNOPATH/$BUILD.fa.fai
 
 fi
 
-if [[ $CHROFILE == 1 ]]; then
+if [ "$DICTFILE" == 'y' ]
+then
 
-	#Split by Chromosomes
-	perl splitChr.pl $FILEPATH/$BUILD/seq/$BUILD.fa
+        #Create .dict file
+        java -jar CreateSequenceDictionary.jar R=$ANNOPATH/$BUILD.fa O=$ANNOPATH/$BUILD.dict
 
 fi
 
-if [[ $MAPFILE == 1 ]]; then
+if [ "$CHROFILE" == 'y' ]
+then
 
-	#Create genome mappability file
-	gem_do_index -i $FILEPATH/$BUILD/seq/$BUILD.fa -o $FILEPATH/$BUILD/gem_index
-	gem_mappability -I $FILEPATH/$BUILD/gem_index -l 50 -o $FILEPATH/$BUILD/out50m2_$BUILD.gem.mappability
-	
+        #Split by Chromosomes
+        perl splitChr.pl $ANNOPATH/$BUILD.fa
+
 fi
 
+if [ "$MAPFILE" == 'y' ]
+then
 
+        #Create genome mappability file
+        ./gem-indexer -i $ANNOPATH/$BUILD.fa -o $ANNOPATH/gem_index
+        ./gem-mappability -I $ANNOPATH/gem_index -l 50 -o $ANNOPATH/out50m2_$BUILD.gem.mappability
 
-
-
-
-
+fi

@@ -84,10 +84,50 @@ def main():
 	hmcan_log_report = sys.argv[10]
 	chr_len_file = sys.argv[11]
 	format = sys.argv[12]
-	
-	#binary files
-	GCCOUNT="/usr/bin/HMCan/HMCanV1.20/Utils/GCCount/gccount"
-	HMCAN="/usr/bin/HMCan/HMCanV1.20/src/HMCan"  
+	genome = sys.argv[13]
+
+    #binary files
+    GCCOUNT="/usr/bin/HMCan/HMCanV1.20/Utils/GCCount/gccount"
+    HMCAN="/usr/bin/HMCan/HMCanV1.20/src/HMCan"
+
+    print(chr_len_file)
+    ###### CREATE ANNOTATION FILES #########
+    process=subprocess.Popen('find / -type d -name files | grep database', shell=True, stdout=subprocess.PIPE)
+    databasePath = (process.communicate()[0]).replace("\n","")
+    print(databasePath)
+
+    subprocess.Popen('mkdir -p '+databasePath+'/nebulaAnnotations', shell=True)
+    subprocess.Popen('mkdir -p '+databasePath+'/nebulaAnnotations/'+genome, shell=True)
+
+    nebulaGenomePath=databasePath+"/nebulaAnnotations/"+genome
+    print(nebulaGenomePath)
+
+    FAIFILE='n'
+    LENFILE='n'
+    DICTFILE='n'
+    CHROFILE='n'
+    MAPFILE='n'
+
+    if not os.path.isdir(nebulaGenomePath+"/chromosomes"):
+            subprocess.Popen('mkdir -p '+nebulaGenomePath+'/chromosomes', shell=True)
+            CHROFILE='y'
+
+    if not os.path.isfile(nebulaGenomePath+"/"+genome+".len"):
+            FAIFILE='y'
+            LENFILE='y'
+
+    if not os.path.isfile(nebulaGenomePath+"/out50m2_"+genome+".gem.mappability"):
+            MAPFILE='y'
+    
+    print(str(CHROFILE)+" "+str(FAIFILE)+" "+str(LENFILE)+" "+str(MAPFILE))
+
+    FILEPATH=databasePath.replace("database/files","tool-data")
+
+    cmd='bash create_annotation_files.sh '+FAIFILE+" "+LENFILE+" "+DICTFILE+" "+CHROFILE+" "+FILEPATH+" "+genome+" "+MAPFILE+" "+nebulaGenomePath
+    print(cmd)
+    process=subprocess.Popen(cmd, shell=True)
+    process.wait()
+    ############### END ##############
 	
 	# create tmp dir.Returns absolute path to a created tmp_dir  
 	tmp_dir=tempfile.mkdtemp()
