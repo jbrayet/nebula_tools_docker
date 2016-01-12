@@ -61,7 +61,7 @@ def correct_hg19 (hg19Len,corrected_hg19Len ):
 	o=open(corrected_hg19Len, "w")
 	for line in i.readlines():
 		col=line.split(" ")
-		col.insert(1, "\t")
+		col.insert(1, "    ")
 		o.write("".join(col))
 	
 	i.close()
