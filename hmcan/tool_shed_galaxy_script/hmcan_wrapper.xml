@@ -50,15 +50,15 @@ in this version, you still need to :
 			</param>
 			<!-- set the correct genome_path / mappability / chr_len for all genomes! -->
 			<when value="hg19">
-				<param name="genome_path" type="hidden" value="/galaxy-central/genomes/hg19/chromosomes"/>
-				<param name="mappability" type="hidden" value="/galaxy-central/genomes/hg19/out50m2_hg19.gem.mappability"/> 
-				<param name="chr_len_file" type="hidden" value="/galaxy-central/genomes/hg19/hg19.len"/>
+				<param name="genome_path" type="hidden" value=""/>
+				<param name="mappability" type="hidden" value=""/> 
+				<param name="chr_len_file" type="hidden" value=""/>
 			</when>	
 			
 			<when value="mm9">
-				<param name="genome_path" type="hidden" value="/galaxy-central/genomes/mm9/chromosomes"/>
-				<param name="mappability" type="hidden" value="/galaxy-central/genomes/mm9/out50m2_mm9.gem"/> 
-				<param name="chr_len_file" type="hidden" value="/galaxy-central/genomes/mm9/mm9.len"/>
+				<param name="genome_path" type="hidden" value=""/>
+				<param name="mappability" type="hidden" value=""/> 
+				<param name="chr_len_file" type="hidden" value=""/>
 			</when>
 			
 		</conditional>
@@ -133,7 +133,7 @@ step =
 outputDir = . 
 chrFiles = $genome[ 'genome_path' ]
 chrLenFile = $genome[ 'chr_len_file' ]
-gemMappabilityFile = $genome['mappability' ]
+gemMappabilityFile = $genome[ 'mappability' ]
 		</configfile>
 	</configfiles>
   

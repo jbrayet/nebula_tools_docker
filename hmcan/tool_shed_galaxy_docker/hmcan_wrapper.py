@@ -85,6 +85,15 @@ def main():
 	chr_len_file = sys.argv[11]
 	format = sys.argv[12]
 	genome = sys.argv[13]
+	
+	hmcanconf=open(hmcan_config_file,'r')
+    for line in hmcanconf:
+        print(line)
+    hmcanconf.close()
+    print("sefsedsfs")
+    gccount=open(gccount_config_file,'r')
+    for line in gccount:
+        print line
 
     #binary files
     GCCOUNT="/usr/bin/HMCan/HMCanV1.20/Utils/GCCount/gccount"

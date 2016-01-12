@@ -55,15 +55,23 @@ fi
 
 if [ "$MAPFILE" == 'y' ]
 then
-
-        #Create genome mappability file
+	if [ "$BUILD" == 'mm9' ] || [ "$BUILD" == 'mm10' ] || [ "$BUILD" == 'hg18' ] || [ "$BUILD" == 'hg19' ]
+	then
+		wget http://zerkalo.curie.fr:8080/partage/nebulaAnnotation/mappability/out50m2_$BUILD.gem.mappability -P $ANNOPATH
+	else
+		#Create genome mappability file
         PATH=$PATH:/usr/bin/HMCan
+        wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer -P /usr/bin/HMCan
         chmod +x gem-indexer
+		wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-mappability -P /usr/bin/HMCan
         chmod +x gem-mappability
+		wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer_fasta2meta%2Bcont -P /usr/bin/HMCan
         chmod +x gem-indexer_fasta2meta+cont
+        wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer_bwt-dna -P /usr/bin/HMCan
         chmod +x gem-indexer_bwt-dna
+		wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer_generate -P /usr/bin/HMCan
         chmod +x gem-indexer_generate
-        ./gem-indexer -i $ANNOPATH/$BUILD.fa -o $ANNOPATH/gem_index
-        ./gem-mappability -I $ANNOPATH/gem_index -l 50 -o $ANNOPATH/out50m2_$BUILD.gem.mappability
-
+        ./gem-indexer -i $ANNOPATH/$BUILD.fa -o $ANNOPATH/gem_index.gem
+        ./gem-mappability -I $ANNOPATH/gem_index.gem -l 50 -o $ANNOPATH/out50m2_$BUILD.gem
+	fi
 fi
