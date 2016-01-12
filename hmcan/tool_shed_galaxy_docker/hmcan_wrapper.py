@@ -85,16 +85,6 @@ def main():
     chr_len_file = sys.argv[11]
     format = sys.argv[12]
     genome = sys.argv[13]
-    
-    hmcanconf=open(hmcan_config_file,'r')
-    for line in hmcanconf:
-        print(line)
-    hmcanconf.close()
-    print("sefsedsfs")
-    gccount=open(gccount_config_file,'r')
-    for line in gccount:
-        print line
-    gccount.close()
 
     #binary files
     GCCOUNT="/usr/bin/HMCan/HMCanV1.20/Utils/GCCount/gccount"
@@ -191,6 +181,12 @@ def main():
         cM=subprocess.Popen(args=cmd_gemMappabilityFile, shell=True)
         cM.wait()
 
+        hmcanconf=open(hmcan_config_file,'r')
+        for line in hmcanconf:
+            print(line)
+        hmcanconf.close()
+        print("sefsedsfs")
+
 #*********** END edit config files ****************************        
 
                 
@@ -222,6 +218,11 @@ def main():
         
         cF=subprocess.Popen(args=cmd_chrFiles, shell=True)
         cF.wait()
+        
+        gccount=open(gccount_config_file,'r')
+        for line in gccount:
+            print line
+        gccount.close()
         
         #call HMCan , hmcan_log_report
         hmcan_proc= subprocess.Popen(args= "%s %s >> %s 2>&1" % (HMCAN, " ".join([input_chip_file, input_control_file, hmcan_config_file , project_name]), hmcan_log_report ), shell=True, stderr=subprocess.PIPE)
