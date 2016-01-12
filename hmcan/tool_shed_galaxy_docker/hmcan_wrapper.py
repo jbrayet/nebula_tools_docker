@@ -86,7 +86,7 @@ def main():
 	format = sys.argv[12]
 	genome = sys.argv[13]
 	
-	hmcanconf=open(hmcan_config_file,'r')
+    hmcanconf=open(hmcan_config_file,'r')
     for line in hmcanconf:
         print(line)
     hmcanconf.close()
