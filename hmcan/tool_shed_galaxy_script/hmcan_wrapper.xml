@@ -45,20 +45,31 @@ in this version, you still need to :
 		  ** chr_length file: -->
 		<conditional name="genome">
 			<param name="genome_selector" type="select" label="Select the version of the genome under study">
-				<option value="hg19" selected="true">hg19</option>	
+				<option value="hg19" selected="true">hg19</option>
+				<option value="hg18">hg18</option>
+				<option value="mm10">mm10</option>	
 				<option value="mm9">mm9</option>
 			</param>
 			<!-- set the correct genome_path / mappability / chr_len for all genomes! -->
-			<when value="hg19">
-				<param name="genome_path" type="hidden" value=""/>
-				<param name="mappability" type="hidden" value=""/> 
-				<param name="chr_len_file" type="hidden" value=""/>
+			<when value="hg18">
+				<param name="genome_path" type="hidden" value="/galaxy/annotations"/>
+				<param name="mappability" type="hidden" value="/galaxy/annotations"/> 
+				<param name="chr_len_file" type="hidden" value="/galaxy/annotations"/>
 			</when>	
-			
+			<when value="hg19">
+				<param name="genome_path" type="hidden" value="/galaxy/annotations"/>
+				<param name="mappability" type="hidden" value="/galaxy/annotations"/> 
+				<param name="chr_len_file" type="hidden" value="/galaxy/annotations"/>
+			</when>	
 			<when value="mm9">
-				<param name="genome_path" type="hidden" value=""/>
-				<param name="mappability" type="hidden" value=""/> 
-				<param name="chr_len_file" type="hidden" value=""/>
+				<param name="genome_path" type="hidden" value="/galaxy/annotations"/>
+				<param name="mappability" type="hidden" value="/galaxy/annotations"/> 
+				<param name="chr_len_file" type="hidden" value="/galaxy/annotations"/>
+			</when>
+			<when value="mm10">
+				<param name="genome_path" type="hidden" value="/galaxy/annotations"/>
+				<param name="mappability" type="hidden" value="/galaxy/annotations"/> 
+				<param name="chr_len_file" type="hidden" value="/galaxy/annotations"/>
 			</when>
 			
 		</conditional>
