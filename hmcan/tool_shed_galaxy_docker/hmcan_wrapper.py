@@ -158,19 +158,22 @@ def main():
 #************** EDIT config files (improved)*****************		
 		
 		#Frist, correct hg19.len file, in case HMCan is run for hg19 (because hg19.len is not tabular on the server, better change it here)
-		hg19="hg19"
-		if (hg19 in chr_len_file):
-			correct_hg19 (chr_len_file,"corrected_hg19Len_file.len")	
-			param_len="corrected_hg19Len_file.len"
+		#hg19="hg19"
+		#if (hg19 in chr_len_file):
+		#	correct_hg19 (chr_len_file,"corrected_hg19Len_file.len")	
+		#	param_len="corrected_hg19Len_file.len"
 		
-		else:
+		#else:
 			#to make my life easier..
-			param_len= chr_len_file
+		param_len= chr_len_file
 
 		#Edit gc count config file
 		cmd_step ="sed -i \"/step/c\step = %s\" %s" % ( window_size , gccount_config_file )
 		cmd_window ="sed -i \"/window/c\window = %s\" %s" % ( window_size , gccount_config_file )
-		cmd_chrLen = "sed -i \"/chrLenFile/c\chrLenFile = %s\" %s" % (  param_len , gccount_config_file )
+		cmd_chrLen = "sed \"s~chrLenFile =.*~chrLenFile = "+nebulaGenomePath+"/"+genome+".len~g\" "+gccount_config_file
+		cmd_chrFiles = "sed \"s~chrFiles =.*~chrFiles = "+nebulaGenomePath+"/chromosomes~g\" "+gccount_config_file
+		cmd_gemMappabilityFile = "sed \"s~gemMappabilityFile =.*~gemMappabilityFile = "+nebulaGenomePath+"/out50m2_"+genome+".gem.mappability~g\" "+gccount_config_file
+
 		
 		s=subprocess.Popen(args=cmd_step, shell=True)
 		s.wait()
@@ -178,8 +181,14 @@ def main():
 		w=subprocess.Popen(args=cmd_window, shell=True)
 		w.wait()
 			
-		c=subprocess.Popen(args=cmd_chrLen, shell=True)
-		c.wait()
+		cL=subprocess.Popen(args=cmd_chrLen, shell=True)
+		cL.wait()
+
+		cF=subprocess.Popen(args=cmd_chrFiles, shell=True)
+		cF.wait()
+			
+		cM=subprocess.Popen(args=cmd_gemMappabilityFile, shell=True)
+		cM.wait()
 
 #*********** END edit config files ****************************		
 
@@ -202,13 +211,16 @@ def main():
 		# EDIT hmcan config file : add 'GCIndex' and 'largeBinLength' 
 		cmd_gc="sed -i \"/GCIndex/c\GCIndex %s\" %s" % ( cnp_file , hmcan_config_file )
 		cmd_bin="sed -i \"/largeBinLength/c\largeBinLength %s\" %s" % ( window_size , hmcan_config_file )
-		
-		
+		cmd_chrFiles = "sed \"s~chrFiles =.*~chrFiles = "+nebulaGenomePath+"/chromosomes~g\" "+hmcan_config_file
+
 		g=subprocess.Popen(args=cmd_gc, shell=True)
 		g.wait()
 		
 		b=subprocess.Popen(args=cmd_bin, shell=True)
 		b.wait()
+		
+		cF=subprocess.Popen(args=cmd_chrFiles, shell=True)
+		cF.wait()
 		
 		#call HMCan , hmcan_log_report
 		hmcan_proc= subprocess.Popen(args= "%s %s >> %s 2>&1" % (HMCAN, " ".join([input_chip_file, input_control_file, hmcan_config_file , project_name]), hmcan_log_report ), shell=True, stderr=subprocess.PIPE)
