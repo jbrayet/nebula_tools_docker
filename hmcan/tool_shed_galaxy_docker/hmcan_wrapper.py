@@ -123,7 +123,7 @@ def main():
 
     FILEPATH=databasePath.replace("database/files","tool-data")
 
-    cmd='bash create_annotation_files.sh '+FAIFILE+" "+LENFILE+" "+DICTFILE+" "+CHROFILE+" "+FILEPATH+" "+genome+" "+MAPFILE+" "+nebulaGenomePath
+    cmd='bash /usr/bin/HMCan/create_annotation_files.sh '+FAIFILE+" "+LENFILE+" "+DICTFILE+" "+CHROFILE+" "+FILEPATH+" "+genome+" "+MAPFILE+" "+nebulaGenomePath
     print(cmd)
     process=subprocess.Popen(cmd, shell=True)
     process.wait()
@@ -140,7 +140,7 @@ def main():
         os.chdir(tmp_dir)
         
         #add 'window size' and 'step' to gccount config file
-        window_size=calculate_window_size (chr_len_file, input_control_file, format)
+        window_size=calculate_window_size (nebulaGenomePath+"/"+genome+".len", input_control_file, format)
 
         #window_size=10000 
         #print ("window_size= %i\n" % window_size)
@@ -156,7 +156,7 @@ def main():
         
         #else:
             #to make my life easier..
-        param_len= chr_len_file
+        #param_len= chr_len_file
 
         #Edit gc count config file
         cmd_step ="sed -i \"/step/c\step = %s\" %s" % ( window_size , gccount_config_file )
