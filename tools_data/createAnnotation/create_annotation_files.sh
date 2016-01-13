@@ -57,7 +57,7 @@ if [ "$MAPFILE" == 'y' ]
 then
 	if [ "$BUILD" == 'mm9' ] || [ "$BUILD" == 'mm10' ] || [ "$BUILD" == 'hg18' ] || [ "$BUILD" == 'hg19' ]
 	then
-		wget –quiet http://zerkalo.curie.fr:8080/partage/nebulaAnnotation/mappability/out50m2_$BUILD.gem.mappability -P $ANNOPATH
+		wget –q http://zerkalo.curie.fr:8080/partage/nebulaAnnotation/mappability/out50m2_$BUILD.gem.mappability -P $ANNOPATH
 	else
 		#Create genome mappability file
         PATH=$PATH:/usr/bin/HMCan
