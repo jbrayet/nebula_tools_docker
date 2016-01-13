@@ -90,17 +90,14 @@ def main():
     GCCOUNT="/usr/bin/HMCan/HMCanV1.20/Utils/GCCount/gccount"
     HMCAN="/usr/bin/HMCan/HMCanV1.20/src/HMCan"
 
-    print(chr_len_file)
     ###### CREATE ANNOTATION FILES #########
     process=subprocess.Popen('find / -type d -name files | grep database', shell=True, stdout=subprocess.PIPE)
     databasePath = (process.communicate()[0]).replace("\n","")
-    print(databasePath)
-
+    
     subprocess.Popen('mkdir -p '+databasePath+'/nebulaAnnotations', shell=True)
     subprocess.Popen('mkdir -p '+databasePath+'/nebulaAnnotations/'+genome, shell=True)
 
     nebulaGenomePath=databasePath+"/nebulaAnnotations/"+genome
-    print(nebulaGenomePath)
 
     FAIFILE='n'
     LENFILE='n'
@@ -119,12 +116,9 @@ def main():
     if not os.path.isfile(nebulaGenomePath+"/out50m2_"+genome+".gem.mappability"):
         MAPFILE='y'
     
-    print(str(CHROFILE)+" "+str(FAIFILE)+" "+str(LENFILE)+" "+str(MAPFILE))
-
     FILEPATH=databasePath.replace("database/files","tool-data")
 
     cmd='bash /usr/bin/HMCan/create_annotation_files.sh '+FAIFILE+" "+LENFILE+" "+DICTFILE+" "+CHROFILE+" "+FILEPATH+" "+genome+" "+MAPFILE+" "+nebulaGenomePath
-    print(cmd)
     process=subprocess.Popen(cmd, shell=True)
     process.wait()
     ############### END ##############
@@ -161,9 +155,9 @@ def main():
         #Edit gc count config file
         cmd_step ="sed -i \"/step/c\step = %s\" %s" % ( window_size , gccount_config_file )
         cmd_window ="sed -i \"/window/c\window = %s\" %s" % ( window_size , gccount_config_file )
-        cmd_chrLen = "sed \"s~chrLenFile =.*~chrLenFile = "+nebulaGenomePath+"/"+genome+".len~g\" "+gccount_config_file
-        cmd_chrFiles = "sed \"s~chrFiles =.*~chrFiles = "+nebulaGenomePath+"/chromosomes~g\" "+gccount_config_file
-        cmd_gemMappabilityFile = "sed \"s~gemMappabilityFile =.*~gemMappabilityFile = "+nebulaGenomePath+"/out50m2_"+genome+".gem.mappability~g\" "+gccount_config_file
+        cmd_chrLen = "sed -i \"s~chrLenFile =.*~chrLenFile = "+nebulaGenomePath+"/"+genome+".len~g\" "+gccount_config_file
+        cmd_chrFiles = "sed -i \"s~chrFiles =.*~chrFiles = "+nebulaGenomePath+"/chromosomes~g\" "+gccount_config_file
+        cmd_gemMappabilityFile = "sed -i \"s~gemMappabilityFile =.*~gemMappabilityFile = "+nebulaGenomePath+"/out50m2_"+genome+".gem.mappability~g\" "+gccount_config_file
 
         
         s=subprocess.Popen(args=cmd_step, shell=True)
@@ -180,12 +174,6 @@ def main():
             
         cM=subprocess.Popen(args=cmd_gemMappabilityFile, shell=True)
         cM.wait()
-
-        hmcanconf=open(hmcan_config_file,'r')
-        for line in hmcanconf:
-            print(line)
-        hmcanconf.close()
-        print("sefsedsfs")
 
 #*********** END edit config files ****************************        
 
@@ -208,7 +196,7 @@ def main():
         # EDIT hmcan config file : add 'GCIndex' and 'largeBinLength' 
         cmd_gc="sed -i \"/GCIndex/c\GCIndex %s\" %s" % ( cnp_file , hmcan_config_file )
         cmd_bin="sed -i \"/largeBinLength/c\largeBinLength %s\" %s" % ( window_size , hmcan_config_file )
-        cmd_chrFiles = "sed \"s~chrFiles =.*~chrFiles = "+nebulaGenomePath+"/chromosomes~g\" "+hmcan_config_file
+        cmd_chrFiles = "sed -i \"s~genomePath.*~genomePath "+nebulaGenomePath+"/chromosomes~g\" "+hmcan_config_file
 
         g=subprocess.Popen(args=cmd_gc, shell=True)
         g.wait()
@@ -218,11 +206,6 @@ def main():
         
         cF=subprocess.Popen(args=cmd_chrFiles, shell=True)
         cF.wait()
-        
-        gccount=open(gccount_config_file,'r')
-        for line in gccount:
-            print line
-        gccount.close()
         
         #call HMCan , hmcan_log_report
         hmcan_proc= subprocess.Popen(args= "%s %s >> %s 2>&1" % (HMCAN, " ".join([input_chip_file, input_control_file, hmcan_config_file , project_name]), hmcan_log_report ), shell=True, stderr=subprocess.PIPE)

@@ -49,7 +49,7 @@ if [ "$CHROFILE" == 'y' ]
 then
 
         #Split by Chromosomes
-        perl splitChr.pl $BUILD.fa $ANNOPATH $ANNOPATH/chromosomes
+        perl /usr/bin/HMCan/splitChr.pl $BUILD.fa $ANNOPATH $ANNOPATH/chromosomes
         
 fi
 
