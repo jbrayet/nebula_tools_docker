@@ -142,6 +142,8 @@ def main():
 
 #************** EDIT config files (improved)*****************        
         
+        chr_len_file=nebulaGenomePath+"/"+genome+".len"
+        
         #Frist, correct hg19.len file, in case HMCan is run for hg19 (because hg19.len is not tabular on the server, better change it here)
         hg19="hg19"
         if (hg19 in genome):
