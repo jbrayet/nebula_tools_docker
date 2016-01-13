@@ -61,7 +61,7 @@ def correct_hg19 (hg19Len,corrected_hg19Len ):
     o=open(corrected_hg19Len, "w")
     for line in i.readlines():
         col=line.split(" ")
-        col.insert(1, "    ")
+        col.insert(1, "\t")
         o.write("".join(col))
     
     i.close()
@@ -143,19 +143,19 @@ def main():
 #************** EDIT config files (improved)*****************        
         
         #Frist, correct hg19.len file, in case HMCan is run for hg19 (because hg19.len is not tabular on the server, better change it here)
-        #hg19="hg19"
-        #if (hg19 in chr_len_file):
-        #    correct_hg19 (chr_len_file,"corrected_hg19Len_file.len")    
-        #    param_len="corrected_hg19Len_file.len"
-        
-        #else:
+        hg19="hg19"
+        if (hg19 in genome):
+            correct_hg19 (chr_len_file,nebulaGenomePath+"/corrected_hg19Len_file.len")
+            param_len=nebulaGenomePath+"/corrected_hg19Len_file.len"
+
+        else:
             #to make my life easier..
-        #param_len= chr_len_file
+            param_len= chr_len_file
 
         #Edit gc count config file
         cmd_step ="sed -i \"/step/c\step = %s\" %s" % ( window_size , gccount_config_file )
         cmd_window ="sed -i \"/window/c\window = %s\" %s" % ( window_size , gccount_config_file )
-        cmd_chrLen = "sed -i \"s~chrLenFile =.*~chrLenFile = "+nebulaGenomePath+"/"+genome+".len~g\" "+gccount_config_file
+        cmd_chrLen = "sed -i \"s~chrLenFile =.*~chrLenFile = "+param_len+"~g\" "+gccount_config_file
         cmd_chrFiles = "sed -i \"s~chrFiles =.*~chrFiles = "+nebulaGenomePath+"/chromosomes~g\" "+gccount_config_file
         cmd_gemMappabilityFile = "sed -i \"s~gemMappabilityFile =.*~gemMappabilityFile = "+nebulaGenomePath+"/out50m2_"+genome+".gem.mappability~g\" "+gccount_config_file
 
