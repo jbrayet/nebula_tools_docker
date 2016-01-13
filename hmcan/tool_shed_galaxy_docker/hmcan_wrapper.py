@@ -85,14 +85,14 @@ def main():
     chr_len_file = sys.argv[11]
     format = sys.argv[12]
     genome = sys.argv[13]
+    root_dir = sys.argv[14]
 
     #binary files
     GCCOUNT="/usr/bin/HMCan/HMCanV1.20/Utils/GCCount/gccount"
     HMCAN="/usr/bin/HMCan/HMCanV1.20/src/HMCan"
 
     ###### CREATE ANNOTATION FILES #########
-    process=subprocess.Popen('find / -type d -name files | grep database', shell=True, stdout=subprocess.PIPE)
-    databasePath = (process.communicate()[0]).replace("\n","")
+    databasePath = root_dir+"/database/files"
     
     subprocess.Popen('mkdir -p '+databasePath+'/nebulaAnnotations', shell=True)
     subprocess.Popen('mkdir -p '+databasePath+'/nebulaAnnotations/'+genome, shell=True)
