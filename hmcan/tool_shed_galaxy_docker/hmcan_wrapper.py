@@ -118,7 +118,7 @@ def main():
     
     FILEPATH=databasePath.replace("database/files","tool-data")
 
-    cmd='bash /usr/bin/HMCan/create_annotation_files.sh '+FAIFILE+" "+LENFILE+" "+DICTFILE+" "+CHROFILE+" "+FILEPATH+" "+genome+" "+MAPFILE+" "+nebulaGenomePath
+    cmd='bash /usr/bin/create_annotation_files.sh '+FAIFILE+" "+LENFILE+" "+DICTFILE+" "+CHROFILE+" "+FILEPATH+" "+genome+" "+MAPFILE+" "+nebulaGenomePath
     process=subprocess.Popen(cmd, shell=True)
     process.wait()
     ############### END ##############

@@ -32,8 +32,8 @@ WORKDIR /usr/bin/HMCan
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/HMCanV1.20.tar.gz -P /usr/bin/HMCan
 RUN tar -zxvf HMCanV1.20.tar.gz
 RUN rm -f HMCanV1.20.tar.gz
-RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/create_annotation_files.sh -P /usr/bin/HMCan
-RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/splitChr.pl -P /usr/bin/HMCan
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/create_annotation_files.sh -P /usr/bin
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/splitChr.pl -P /usr/bin
 
 ##################### INSTALLATION END #####################
 

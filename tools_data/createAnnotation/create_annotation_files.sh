@@ -49,7 +49,7 @@ if [ "$CHROFILE" == 'y' ]
 then
 
         #Split by Chromosomes
-        perl /usr/bin/HMCan/splitChr.pl $BUILD.fa $ANNOPATH $ANNOPATH/chromosomes
+        perl /usr/bin/splitChr.pl $BUILD.fa $ANNOPATH $ANNOPATH/chromosomes
         
 fi
 
@@ -60,16 +60,16 @@ then
 		wget http://zerkalo.curie.fr:8080/partage/nebulaAnnotation/mappability/out50m2_$BUILD.gem.mappability -P $ANNOPATH -q
 	else
 		#Create genome mappability file
-        PATH=$PATH:/usr/bin/HMCan
-        wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer -P /usr/bin/HMCan
+        PATH=$PATH:/usr/bin
+        wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer -P /usr/bin
         chmod +x gem-indexer
-		wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-mappability -P /usr/bin/HMCan
+		wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-mappability -P /usr/bin
         chmod +x gem-mappability
-		wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer_fasta2meta%2Bcont -P /usr/bin/HMCan
+		wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer_fasta2meta%2Bcont -P /usr/bin
         chmod +x gem-indexer_fasta2meta+cont
-        wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer_bwt-dna -P /usr/bin/HMCan
+        wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer_bwt-dna -P /usr/bin
         chmod +x gem-indexer_bwt-dna
-		wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer_generate -P /usr/bin/HMCan
+		wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/gem-indexer_generate -P /usr/bin
         chmod +x gem-indexer_generate
         ./gem-indexer -i $ANNOPATH/$BUILD.fa -o $ANNOPATH/gem_index.gem
         ./gem-mappability -I $ANNOPATH/gem_index.gem -l 50 -o $ANNOPATH/out50m2_$BUILD.gem
