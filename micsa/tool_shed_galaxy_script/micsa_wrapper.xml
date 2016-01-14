@@ -47,7 +47,7 @@ micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b
 			</param>
 		<!-- BLACKLIST CHOICE depending on genome -->
 			<when value="hg19">
-				<param name="genome_path" type="hidden" value="/galaxy-central/genomes/"/>
+				<param name="genome_path" type="hidden" value="/galaxy/annotations"/>
 				<!--Blacklist selector for hg19 -->
 				<conditional name="blacklist" >
 				
@@ -59,22 +59,22 @@ micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b
 				
 					<!--Set blacklists param for hg19 -->
 					<when value="dac_blacklist_hg19">
-						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/dac_blacklist_hg19.bed" />
+						<param name="blacklist_file" type="hidden" value="dac_blacklist_hg19.bed" />
 					</when>
 				
 					<when value="duke_blacklist_hg19">
-						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/duke_blacklist_hg19.bed" />
+						<param name="blacklist_file" type="hidden" value="duke_blacklist_hg19.bed" />
 					</when>
 				
 					<when value="dacDuke_blacklist_hg19">
-						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/dacDuke_blacklist_hg19.bed" />			
+						<param name="blacklist_file" type="hidden" value="dacDuke_blacklist_hg19.bed" />			
 					</when>
 			
 				</conditional>
 			</when>	
 				
 			<when value="hg18">
-				<param name="genome_path" type="hidden" value="/galaxy-central/genomes/"/>
+				<param name="genome_path" type="hidden" value="/galaxy/annotations"/>
 				<!--Blacklist selector for hg18-->
 				<conditional name="blacklist" >
 				
@@ -86,15 +86,15 @@ micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b
 				
 					<!--Set blacklists param for hg18 -->
 					<when value="duke_blacklist_hg18">
-						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/duke_blacklist_hg18.bed"/>
+						<param name="blacklist_file" type="hidden" value="duke_blacklist_hg18.bed"/>
 					</when>
 				
 					<when value="dac_hg19blacklist_lifted_to_hg18">
-						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/dac_hg19blacklist_lifted_to_hg18.bed" />
+						<param name="blacklist_file" type="hidden" value="dac_hg19blacklist_lifted_to_hg18.bed" />
 					</when>
 				
 					<when value="dacDuke_hg19blacklist_lifted_to_hg18">
-						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/dacDuke_hg19blacklist_lifted_to_hg18.bed" />
+						<param name="blacklist_file" type="hidden" value="dacDuke_hg19blacklist_lifted_to_hg18.bed" />
 					</when>
 				
 				</conditional>

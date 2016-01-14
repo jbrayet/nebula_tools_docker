@@ -57,25 +57,54 @@ a) BUILD="$OPTARG";;
 esac
 done
 
-
-
-
 PATH_MICSA="/usr/bin/micsa/MICSA"
 PATH_FP="/usr/bin/micsa/VancouverPackage-4.0.9.2/jars/fp4/"
 
 DATABASE_PATH=$ROOT_DIR/database/files
 mkdir -p $DATABASE_PATH/nebulaAnnotations
+mkdir -p $DATABASE_PATH/nebulaAnnotations/$BUILD
 nebulaAnnotationPath=$DATABASE_PATH/nebulaAnnotations
 
-#### CREATE A SAFE TEMP OUTDIR for  Nebula
+############### Create annotations files ################
 
-#OUTDIR='/data/tmp/amira/micsa/BIG_TEST'
+FAIFILE='n'
+LENFILE='n'
+DICTFILE='n'
+CHROFILE='n'
+MAPFILE='n'
+
+if [ ! -d $DATABASE_PATH/nebulaAnnotations/$BUILD/chromosomes ]; then
+    mkdir -p $DATABASE_PATH/nebulaAnnotations/$BUILD/chromosomes
+    CHROFILE='y'
+fi
+
+FILEPATH=$ROOT_DIR/tool-data
+
+bash /usr/bin/create_annotation_files.sh $FAIFILE $LENFILE $DICTFILE $CHROFILE $FILEPATH $BUILD $MAPFILE $nebulaGenomePath
+
+if [ ! -d $DATABASE_PATH/nebulaAnnotations/$BUILD/blacklist ]; then
+    mkdir -p $DATABASE_PATH/nebulaAnnotations/$BUILD/blacklist
+    if [[ "$BUILD" == "hg18" ]]; then
+        wget http://zerkalo.curie.fr:8080/partage/nebulaAnnotation/blacklist/dacDuke_hg19blacklist_lifted_to_hg18.bed -P $DATABASE_PATH/nebulaAnnotations/$BUILD/blacklist
+        wget http://zerkalo.curie.fr:8080/partage/nebulaAnnotation/blacklist/dac_hg19blacklist_lifted_to_hg18.bed -P $DATABASE_PATH/nebulaAnnotations/$BUILD/blacklist
+        wget http://zerkalo.curie.fr:8080/partage/nebulaAnnotation/blacklist/duke_blacklist_hg18.bed -P $DATABASE_PATH/nebulaAnnotations/$BUILD/blacklist
+    fi
+    if [[ "$BUILD" == "hg19" ]]; then
+        wget http://zerkalo.curie.fr:8080/partage/nebulaAnnotation/blacklist/dacDuke_blacklist_hg19.bed -P $DATABASE_PATH/nebulaAnnotations/$BUILD/blacklist
+        wget http://zerkalo.curie.fr:8080/partage/nebulaAnnotation/blacklist/dac_blacklist_hg19.bed -P $DATABASE_PATH/nebulaAnnotations/$BUILD/blacklist
+        wget http://zerkalo.curie.fr:8080/partage/nebulaAnnotation/blacklist/duke_blacklist_hg19.bed -P $DATABASE_PATH/nebulaAnnotations/$BUILD/blacklist
+    fi
+fi
+
+BLACK_LIST_PATH=$DATABASE_PATH/nebulaAnnotations/$BUILD/blacklist
+
+#################### END ANNOTATION FILES ###########################
+
+#### CREATE A SAFE TEMP OUTDIR for  Nebula
 
 OUTDIR=`mktemp -d`
 
 echo $OUTDIR > $LOG.tmp
-#chmod 777 $LOG.tmp
-
 
 #hard code the creation of OUTDIR
 if [ -d $OUTDIR ]; then
@@ -186,9 +215,9 @@ fi
 ########## out : chip_triangle_standard.peaks	chip_triangle_standard.wig.gz ############## DELETE REGIONS
 echo "Starting Delete Regions..." >> $LOG.tmp
 
-java -Xmx1565m -cp $PATH_MICSA DeleteRegions -f $OUTDIR/wig/chip_triangle_standard.peaks -r $BLACK_LIST >> $LOG.tmp #> /dev/null
+java -Xmx1565m -cp $PATH_MICSA DeleteRegions -f $OUTDIR/wig/chip_triangle_standard.peaks -r $BLACK_LIST_PATH/$BLACK_LIST >> $LOG.tmp #> /dev/null
 
-java -Xmx1565m -cp $PATH_MICSA DeleteRegions -f $OUTDIR/wig/control_triangle_standard.peaks -r $BLACK_LIST >> $LOG.tmp # > /dev/null
+java -Xmx1565m -cp $PATH_MICSA DeleteRegions -f $OUTDIR/wig/control_triangle_standard.peaks -r $BLACK_LIST_PATH/$BLACK_LIST >> $LOG.tmp # > /dev/null
 
 
 ####### writes in files.peaks ########################################### SUMMARY
@@ -217,10 +246,10 @@ pwd >> $LOG.tmp
 export PATH=$PATH:/bioinfo/local/build/meme_4.9.1/bin/
 echo "##### PATH=$PATH" >> $LOG.tmp
 echo "Starting Micsa..." >> $LOG.tmp
-echo "##### java -Xmx4G -jar $PATH_MICSA/micsa.jar -name $NAME -f $OUTDIR/wig/chip_triangle_standard.peaks $OPTION $VALUE -o $OUTDIR/wig -l $OUTDIR/wig/FindPeaksSummary.txt -g $GENOME -w $OUTDIR/wig/chip_triangle_standard.wig.gz >> $LOG.tmp 2>&1 ">> $LOG.tmp
+echo "##### java -Xmx4G -jar $PATH_MICSA/micsa.jar -name $NAME -f $OUTDIR/wig/chip_triangle_standard.peaks $OPTION $VALUE -o $OUTDIR/wig -l $OUTDIR/wig/FindPeaksSummary.txt -g $DATABASE_PATH/nebulaAnnotations -w $OUTDIR/wig/chip_triangle_standard.wig.gz >> $LOG.tmp 2>&1 ">> $LOG.tmp
 
 #double memory 2 to 4
-java -Xmx4G -jar $PATH_MICSA/micsa.jar -name $NAME -f $OUTDIR/wig/chip_triangle_standard.peaks $OPTION $VALUE -o $OUTDIR/wig -l $OUTDIR/wig/FindPeaksSummary.txt -g $GENOME -w $OUTDIR/wig/chip_triangle_standard.wig.gz >> $LOG.tmp 2>&1
+java -Xmx4G -jar $PATH_MICSA/micsa.jar -name $NAME -f $OUTDIR/wig/chip_triangle_standard.peaks $OPTION $VALUE -o $OUTDIR/wig -l $OUTDIR/wig/FindPeaksSummary.txt -g $DATABASE_PATH/nebulaAnnotations -w $OUTDIR/wig/chip_triangle_standard.wig.gz >> $LOG.tmp 2>&1
 
 
 ############# ALL 3 OUTPUTS ARE IN $OUTPUTS/wig
