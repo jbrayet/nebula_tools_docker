@@ -14,7 +14,8 @@
 
 # Set the base image to Ubuntu, java 6 and ruby 2.0
 FROM ubuntu:14.04
-FROM java:6
+FROM java:6-jdk
+FROM java:6-jre
 FROM ruby:2.0
 
 #############
