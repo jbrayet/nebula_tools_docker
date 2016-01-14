@@ -1,0 +1,238 @@
+<tool id="micsa" name="MICSA">
+	<description>Motif Identification for Chip-Seq Analysis.</description>
+	<requirements>
+    	<container type="docker">institutcuriengsintegration/micsa:1.0</container>
+	</requirements>
+	<command interpreter="bash">
+
+##silent  sys.stderr.write(" genome black list : %s\n" % ( str( $genome.blacklist['blacklist_file'] ) ) )
+##silent  sys.stderr.write(" format : %s\n" % ( str( $format_selector ) ) )
+##silent  sys.stderr.write(" fdr_or_fp option: %s\n" % ( str( $fdr_or_fp['cmd_option'] ) ) )
+
+#if str($fdr_or_fp['cmd_option']) == "-n"
+micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b $genome.blacklist['blacklist_file'] -r $ratio -n ${project_name} -f ${format_selector} -p $fdr_or_fp['cmd_option'] -v $fdr_or_fp['fpp'] -w ${selected_peaks_wig_gz} -t ${selected_peaks_txt} -l ${motifs_words_out} -m ${micsa_log} -o ${outpng} -d ${__root_dir__} -a $genome['genome_selector']
+	
+#else
+micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b $genome.blacklist['blacklist_file'] -r $ratio -n ${project_name} -f ${format_selector} -p $fdr_or_fp['cmd_option'] -v $fdr_or_fp['fdr'] -w ${selected_peaks_wig_gz} -t ${selected_peaks_txt} -l ${motifs_words_out} -m ${micsa_log} -o ${outpng} -d ${__root_dir__} -a $genome['genome_selector']
+
+#end if
+
+	</command>
+<!-- INPUT DESCRIPTION -->
+	<inputs> 
+		<!-- project name-->
+		<param name="project_name" type="text" value="ChIPseq" size="20" label="Project name" help="NOTE : Spaces are not allowed.">
+			<validator type="empty_field" message="You must specify a file name."/>
+		</param>
+		
+		<!-- Alignement FILES and their FORMAT NB: format= only if attribute type is data, formats (bed,sam..) are contained in datatypes_conf.xml.sample f-->
+		<param name="chip_file" type="data" format="bed,bam,sam" label="ChIP seq alignment file"/>
+		<param name="control_file" type="data" format="bed,bam,sam" label="Control alignment file"/>
+		
+		<!-- format : keep BAM, BED-->
+		<param name="format_selector" type="select" label="Select lignment Format">
+        	<option value="bed" selected="true">BED</option>
+        	<option value="bam">BAM</option>
+        	<option value="sam">SAM</option>
+        </param>
+	
+		<!-- parameter : -m for FINDPEAKS -->
+		<param name="min_converage" type="integer" value="3" label="Minimal coverage of potential binding site" help="This value is roughly equal to the minimal number of mapped DNA reads in a window (the minimal value is 3)."/>
+		
+		<!-- GENOME CHOICE -->
+		<conditional name="genome">
+			<param name="genome_selector" type="select" label="Select the genome under study">
+				<option value="hg19" selected="true">hg19</option>	
+				<option value="hg18">hg18</option>   
+			</param>
+		<!-- BLACKLIST CHOICE depending on genome -->
+			<when value="hg19">
+				<param name="genome_path" type="hidden" value="/galaxy-central/genomes/"/>
+				<!--Blacklist selector for hg19 -->
+				<conditional name="blacklist" >
+				
+					<param name="blacklist_selector" type="select" label="Select a Black list of genomic regions" help="Read about the provided genomic blacklists in the help section.">
+						<option value="dac_blacklist_hg19" selected="true">DAC Blacklisted Regions for hg19</option>	
+						<option value="duke_blacklist_hg19">Duke Excluded Regions for hg19</option> 
+						<option value="dacDuke_blacklist_hg19">Merged DAC/Duke Backlisted Regions for hg19</option>  
+					</param>	
+				
+					<!--Set blacklists param for hg19 -->
+					<when value="dac_blacklist_hg19">
+						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/dac_blacklist_hg19.bed" />
+					</when>
+				
+					<when value="duke_blacklist_hg19">
+						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/duke_blacklist_hg19.bed" />
+					</when>
+				
+					<when value="dacDuke_blacklist_hg19">
+						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/dacDuke_blacklist_hg19.bed" />			
+					</when>
+			
+				</conditional>
+			</when>	
+				
+			<when value="hg18">
+				<param name="genome_path" type="hidden" value="/galaxy-central/genomes/"/>
+				<!--Blacklist selector for hg18-->
+				<conditional name="blacklist" >
+				
+					<param name="blacklist_selector" type="select" label="Select a black list of genomic regions" help="You can read about the provided genomic black lists below.">
+						<option value="duke_blacklist_hg18" selected="true">Duke Excluded Regions for hg18</option>	
+						<option value="dac_hg19blacklist_lifted_to_hg18">hg19 DAC Blacklisted regions lifted to hg18</option>
+						<option value="dacDuke_hg19blacklist_lifted_to_hg18">hg19 Merged DAC/Duke Backlisted Regions lifted to hg18</option>
+					</param>
+				
+					<!--Set blacklists param for hg18 -->
+					<when value="duke_blacklist_hg18">
+						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/duke_blacklist_hg18.bed"/>
+					</when>
+				
+					<when value="dac_hg19blacklist_lifted_to_hg18">
+						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/dac_hg19blacklist_lifted_to_hg18.bed" />
+					</when>
+				
+					<when value="dacDuke_hg19blacklist_lifted_to_hg18">
+						<param name="blacklist_file" type="hidden" value="/galaxy-central/genomes/dacDuke_hg19blacklist_lifted_to_hg18.bed" />
+					</when>
+				
+				</conditional>
+				
+			</when>
+		</conditional>
+		<!-- ratio for -r Summary-->
+		<param name="ratio" type="float" value="2.0" label= "Ratio for filtering peaks using the control dataset" help="When a peak in the ChIP data overlaps with a peak in the control data, the former will be discarded if the height of peak from ChIP data devided by the hight of peak in the control data is smaller than the specified ratio. Set to '0' if you don't want to use control dataset for filering."/>
+		
+		
+		
+		<!-- SET either FDR or FALSE POSITIF NUMBER -->
+		<conditional name="fdr_or_fp">
+			<param name="fdr_or_fp_selector" type="select" label="Set either FDR or Number of expected false positive peaks ">
+				<option value="fdr_selector" selected="true">Set FDR value</option>
+				<option value="fpp_selector">Set number of false positive peaks</option>
+			</param>
+		
+			<when value="fdr_selector">
+				<param name="fdr" type="float" value="0.01" label="FDR (False Discovery Rate)"/>
+				<!-- secretly set option for the command line-->
+				<param name="cmd_option" type="hidden" value="-fdr"/>
+				
+			</when>
+			<when value="fpp_selector">
+				<param name="fpp" type="integer" value="100" label="Number of false positif peaks allowed" help="With 120 false positives you can find about 5000 peaks."/>
+				<!-- secretly set option for the command line-->
+				<param name="cmd_option" type="hidden" value="-n"/>
+			</when>
+		
+		</conditional>	
+<!-- Booelan for outputs-->				
+		<!-- Booleans -->
+		<param name="print_words" type="boolean" truevalue="True" falsevalue="False" checked="true" label="Print words used for motif construction" />
+		<param name="print_log" type="boolean" truevalue= "True" falsevalue="False" checked="true" label="Print MICSA log"/>
+		
+		
+<!-- ###### OPTIONAL PARAMETERS
+
+Should I show it ??
+
+		<conditional name="optional_param">
+			<param name="optional_param_selector" type="select" label=" Set fragment lengths (minimun, median, maximum) help=" These are optional parameters. Please set only if all of them are known.">
+				<option value="show" selected="true">Fragment lengths available</option>
+				<option value="hide">Show Optionnal parameters</option>
+			</param>
+			
+			
+			<when value="hide"/>
+			<when value="show"> 
+				<param name="min_len" type="integer" value="0" label="Minumum fragment length used in the ChIP-seq experiment"/>
+				<param name="med_len" type="integer" value="0" label="Median fragment length used in the ChIP-seq experiment"/>
+				<param name="max_len" type="integer" value="0" label="Maximum fragment length used in the ChIP-seq experiment"/>
+			</when>
+		</conditional> 
+		-->	
+	
+	</inputs>
+	
+<!-- OUTPUT DESCRIPTION -->
+	<outputs>
+		<!-- $NAME (peaks.txt)-->
+		<data name="selected_peaks_txt" format="txt" label="${project_name} selected peaks info (txt)"/> 
+		<!-- $OUTDIR/SelectedPeaks.wig.gz (peaks.wig.gz)-->
+		<data name="selected_peaks_wig_gz" format="gzip" label="${project_name} selected peaks (wig)"/>
+		<data name="outpng" format="png" label="${project_name} motif logo (png)"/>
+		
+		<!-- <filter>if this is true, data will be created as normal</filter> -->
+		<!-- motifs.txt-->
+		<data name="motifs_words_out" format="txt" label="${project_name} motif words (txt)">
+			<filter>print_words==True</filter>
+		</data>
+		<!-- $NAME.log-->
+		<data name="micsa_log" format="txt" label="${tool.name} log report (txt)">
+			<filter> print_log==True</filter>
+		</data>
+	</outputs>
+
+
+	<help>
+	
+**What it does**
+
+MICSA performs a sensitive and specific discovery of transcription factor binding sites from ChIP-Seq data by taking into account information about genomic sequences of putative sites.
+
+  
+**Choice of Blacklists**
+
+Blacklists are bed format files with coordinates used to filter out a priori false peaks. All tracks of blacklisted regions attempt to identify regions of the reference genome which are troublesome for high throughput sequencing aligners. Troubled regions may be due to repetitive elements or other anomalies. Each track contains a set of regions of varying length with no special configuration options. 
+
+We provide the following 6 Blacklists :
+
+-----
+
+**The DAC Blacklisted Regions (hg19)** 
+
+aims to identify a comprehensive set of regions in the human genome that have anomalous, unstructured, high signal/read counts in next gen sequencing experiments independent of cell line and type of experiment. There were 80 open chromatin tracks (DNase and FAIRE datasets) and 20 ChIP-seq input/control tracks spanning ~60 human tissue types/cell lines in total used to identify these regions with signal artifacts. The DAC Blacklisted Regions track was generated for the ENCODE project.
+
+-----
+
+**The Duke Excluded Regions (hg19)** 
+
+This track displays genomic regions for which mapped sequence tags were filtered out before signal generation and peak calling for Open Chromatin: DNaseI HS and FAIRE tracks. This track contains problematic regions for short sequence tag signal detection (such as satellites and rRNA genes). The Duke Excluded Regions track was generated for the ENCODE project.
+
+-----
+
+**Merged DAC/Duke Backlisted Regions (hg 19)**
+
+This track results from merging The DAC Blacklisted Regions with The Duke Excluded Regions using BEDtools.
+
+-----
+
+**The Duke Excluded Regions (hg18)**
+
+This track displays genomic regions for which mapped sequence tags were filtered out before signal generation and peak calling for Duke/UNC/UTA's Open Chromatin tracks. This track contains problematic regions for short sequence tag signal detection (such as satellites and rRNA genes). The Duke excluded regions track was generated for the ENCODE project.
+
+-----
+
+**The hg19 DAC Blacklisted regions lifted to hg18**
+
+This track results from lifting hg19 DAC Blacklisted Regions coordinates to hg18 using **LiftOver**. 
+
+**LiftOver** is a UCSC provided tool used to convert genome positions from one genome assembly to another genome assembly (converts BED files).
+
+-----
+
+**The hg19 Merged DAC/Duke Backlisted Regions lifted to hg18**
+
+This track results from lifting the hg19 merged DAC/Duke Backlisted Regions coordinates to hg18 using LiftOver.
+
+-----
+
+**Cite MICSA**
+
+If you use MICSA, please cite : Boeva V, Surdez D, Guillon N, Tirode F, Fejes AP, Delattre O, Barillot E. De novo motif identification improves the accuracy of predicting transcription factor binding sites in ChIP-Seq data analysis. Nucleic Acids Res. 2010 Jun 1;38(11):e126. Epub 2010 Apr 7.
+ 
+
+	</help>
+</tool>
+
+
