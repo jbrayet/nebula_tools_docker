@@ -12,10 +12,8 @@
 # Run Cmd:          docker run --rm -it institutcuriengsintegration/micsa:1.0 <options> <files>
 #################################################################
 
-# Set the base image to Ubuntu, java 6 and ruby 2.0
+# Set the base image to Ubuntu and ruby 2.0
 FROM ubuntu:14.04
-FROM java:6-jdk
-FROM java:6-jre
 FROM ruby:2.0
 
 #############
@@ -24,7 +22,8 @@ RUN apt-get update && \
     apt-get install -y \
       build-essential \
       wget \
-      samtools && \
+      samtools \
+      default-jre && \
     apt-get clean && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
