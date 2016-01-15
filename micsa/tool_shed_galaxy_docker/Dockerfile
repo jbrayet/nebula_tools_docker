@@ -23,7 +23,8 @@ RUN apt-get update && \
       build-essential \
       wget \
       samtools \
-      default-jre && \
+      default-jre \
+      csh && \
     apt-get clean && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -39,6 +40,14 @@ RUN rm -f ChIPMunk_6.0a.tar.gz
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/VancouverPackage-4.0.9.2.tar.gz -P /usr/bin/micsa
 RUN tar -zxvf VancouverPackage-4.0.9.2.tar.gz
 RUN rm -f VancouverPackage-4.0.9.2.tar.gz
+RUN wget http://meme-suite.org/meme-software/4.9.1/meme_4.9.1_2.tar.gz -P /usr/bin/micsa
+RUN tar -zxvf meme_4.9.1_2.tar.gz
+RUN rm -f meme_4.9.1_2.tar.gz
+RUN mkdir /usr/bin/meme
+WORKDIR /usr/bin/micsa/meme_4.9.1
+RUN ./configure --prefix=/usr/bin/meme
+RUN make
+RUN make install
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/create_annotation_files.sh -P /usr/bin
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/splitChr.pl -P /usr/bin
 

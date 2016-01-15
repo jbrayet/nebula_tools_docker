@@ -113,7 +113,6 @@ if [ -d $OUTDIR ]; then
 	chmod 777 $OUTDIR
 else 
 	mkdir $OUTDIR
-	
 fi 
 
 mkdir $OUTDIR/wig
@@ -243,7 +242,7 @@ echo "## WOKING DIRECTORY FOR MICSA :" >> $LOG.tmp
 pwd >> $LOG.tmp
 
 # meme.ben should be added to PATH
-export PATH=$PATH:/bioinfo/local/build/meme_4.9.1/bin/
+export PATH=$PATH:/usr/bin/meme/bin
 echo "##### PATH=$PATH" >> $LOG.tmp
 echo "Starting Micsa..." >> $LOG.tmp
 echo "##### java -Xmx4G -jar $PATH_MICSA/micsa.jar -name $NAME -f $OUTDIR/wig/chip_triangle_standard.peaks $OPTION $VALUE -o $OUTDIR/wig -l $OUTDIR/wig/FindPeaksSummary.txt -g $DATABASE_PATH/nebulaAnnotations -w $OUTDIR/wig/chip_triangle_standard.wig.gz >> $LOG.tmp 2>&1 ">> $LOG.tmp
