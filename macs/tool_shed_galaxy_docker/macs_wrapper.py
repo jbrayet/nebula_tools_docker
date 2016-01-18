@@ -1,7 +1,9 @@
+#!/usr/bin/env python
+
 import sys, subprocess, tempfile, shutil, glob, os, os.path, gzip
-from galaxy import eggs
-import pkg_resources
-pkg_resources.require( "simplejson" )
+#from galaxy import eggs
+#import pkg_resources
+#pkg_resources.require( "simplejson" )
 import simplejson
 
 CHUNK_SIZE = 1024
