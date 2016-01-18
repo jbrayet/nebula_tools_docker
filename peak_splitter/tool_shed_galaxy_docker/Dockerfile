@@ -20,16 +20,16 @@ FROM ubuntu:14.04
 RUN apt-get update && \
     apt-get install -y \
       build-essential \
-      wget \
+      wget && \
     apt-get clean && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN mkdir /usr/bin/peaksplitter
 WORKDIR /usr/bin/peaksplitter
-RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/MICSA.tar.gz -P /usr/bin/peaksplitter
-RUN tar -zxvf MICSA.tar.gz
-RUN rm -f MICSA.tar.gz
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/PeakSplitter_v1.tar.gz -P /usr/bin/peaksplitter
+RUN tar -zxvf PeakSplitter_v1.tar.gz
+RUN rm -f PeakSplitter_v1.tar.gz
 
 ##################### INSTALLATION END #####################
 
