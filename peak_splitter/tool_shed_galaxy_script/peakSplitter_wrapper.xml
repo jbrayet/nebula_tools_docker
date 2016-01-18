@@ -1,0 +1,23 @@
+<tool id="PeakSplitter" name="PeakSplitter" version="1.0">
+  <description>Subdivides peak regions containing more than one site of signal enrichment</description>
+  <requirements>
+  	<container type="docker">institutcuriengsintegration/peaksplitter:1.0</container>
+  </requirements>
+  <command interpreter="bash">peakSplitter_wrapper.sh -p $peaksIn -w $wigIn -o $subPeaks -h ${GALAXY_DATA_INDEX_DIR}</command>
+   <inputs>
+
+    <param name="peaksIn" type="data" format="bed" label="Peaks file"/>
+
+    <param name="wigIn" type="data" format="wig" label="Wig file"/>
+  </inputs>
+  <outputs>  
+    <data name="subPeaks" format="bed" label="subPeaks file" />        
+  </outputs>
+  <help>
+**What it does**
+
+PeakSplitter accurately subdivides experimentally-derived peak regions containing more than one site of signal enrichment, optionally retrieving genomic DNA sequences corresponding to subpeak summit regions. Local maxima are identified in the peak region, heights of neighboring maxima are compared, and the lowest value is multiplied by a user-adjustable parameter to yield the minimum read depth required to separate peaks.
+
+This facilitates more detailed analysis of individual subpeaks, which is particularly useful for discerning individual binding sites that may be present in aggregate peak regions and in obtaining candidate sequences for motif analysis.
+  </help>
+</tool>

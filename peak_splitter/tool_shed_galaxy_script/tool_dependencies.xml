@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<tool_dependency>
+    <package name="docker_peaksplitter" version="0.1">
+        <repository changeset_revision="bd517a9253cb" name="docker_peaksplitter" owner="jbrayet" toolshed="https://testtoolshed.g2.bx.psu.edu" />
+    </package>
+</tool_dependency>
