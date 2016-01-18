@@ -23,7 +23,9 @@ RUN apt-get update && \
     apt-get install -y \
       build-essential \
       wget \
-      samtools && \
+      samtools \
+      ca-certificates \
+      python-pip && \
     apt-get clean && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -33,6 +35,7 @@ WORKDIR /usr/bin/macs
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/MACS_1.4.2.tar.gz -P /usr/bin/macs
 RUN tar -zxvf MACS_1.4.2.tar.gz
 RUN rm -f MACS_1.4.2.tar.gz
+RUN pip install simplejson
 
 ##################### INSTALLATION END #####################
 

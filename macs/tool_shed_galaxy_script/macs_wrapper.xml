@@ -1,10 +1,9 @@
 <tool id="peakcalling_macs" name="MACS" version="1.0.1">
   <description>Model-based Analysis of ChIP-Seq</description>
-  <command interpreter="python">macs_wrapper.py $options_file $output_bed_file $output_extra_files $output_extra_files.files_path</command>
   <requirements>
-    <requirement type="python-module">macs</requirement>
-    <requirement type="package">macs</requirement>
+    <container type="docker">institutcuriengsintegration/macs:1.0</container>
   </requirements>
+  <command interpreter="python">macs_wrapper.py $options_file $output_bed_file $output_extra_files $output_extra_files.files_path</command>
   <inputs>
     <param name="experiment_name" type="text" value="MACS in Galaxy" size="50" label="Experiment Name"/>
     <conditional name="input_type">
