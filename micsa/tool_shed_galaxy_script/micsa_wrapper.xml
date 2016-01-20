@@ -10,10 +10,10 @@
 ##silent  sys.stderr.write(" fdr_or_fp option: %s\n" % ( str( $fdr_or_fp['cmd_option'] ) ) )
 
 #if str($fdr_or_fp['cmd_option']) == "-n"
-micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b $genome.blacklist['blacklist_file'] -r $ratio -n ${project_name} -f ${format_selector} -p $fdr_or_fp['cmd_option'] -v $fdr_or_fp['fpp'] -w ${selected_peaks_wig_gz} -t ${selected_peaks_txt} -l ${motifs_words_out} -m ${micsa_log} -o ${outpng} -x ${min_len} -y ${men_len} -z ${med_len} -d ${__root_dir__} -a $genome['genome_selector']
+micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b $genome.blacklist['blacklist_file'] -r $ratio -n ${project_name} -f ${format_selector} -p $fdr_or_fp['cmd_option'] -v $fdr_or_fp['fpp'] -w ${selected_peaks_wig_gz} -t ${selected_peaks_txt} -l ${motifs_words_out} -m ${micsa_log} -o ${outpng} -x ${min_len} -y ${med_len} -z ${max_len} -d ${__root_dir__} -a $genome['genome_selector']
 	
 #else
-micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b $genome.blacklist['blacklist_file'] -r $ratio -n ${project_name} -f ${format_selector} -p $fdr_or_fp['cmd_option'] -v $fdr_or_fp['fdr'] -w ${selected_peaks_wig_gz} -t ${selected_peaks_txt} -l ${motifs_words_out} -m ${micsa_log} -o ${outpng} -x ${min_len} -y ${men_len} -z ${med_len} -d ${__root_dir__} -a $genome['genome_selector']
+micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b $genome.blacklist['blacklist_file'] -r $ratio -n ${project_name} -f ${format_selector} -p $fdr_or_fp['cmd_option'] -v $fdr_or_fp['fdr'] -w ${selected_peaks_wig_gz} -t ${selected_peaks_txt} -l ${motifs_words_out} -m ${micsa_log} -o ${outpng} -x ${min_len} -y ${med_len} -z ${max_len} -d ${__root_dir__} -a $genome['genome_selector']
 
 #end if
 
