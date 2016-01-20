@@ -10,10 +10,10 @@
 ##silent  sys.stderr.write(" fdr_or_fp option: %s\n" % ( str( $fdr_or_fp['cmd_option'] ) ) )
 
 #if str($fdr_or_fp['cmd_option']) == "-n"
-micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b $genome.blacklist['blacklist_file'] -r $ratio -n ${project_name} -f ${format_selector} -p $fdr_or_fp['cmd_option'] -v $fdr_or_fp['fpp'] -w ${selected_peaks_wig_gz} -t ${selected_peaks_txt} -l ${motifs_words_out} -m ${micsa_log} -o ${outpng} -d ${__root_dir__} -a $genome['genome_selector']
+micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b $genome.blacklist['blacklist_file'] -r $ratio -n ${project_name} -f ${format_selector} -p $fdr_or_fp['cmd_option'] -v $fdr_or_fp['fpp'] -w ${selected_peaks_wig_gz} -t ${selected_peaks_txt} -l ${motifs_words_out} -m ${micsa_log} -o ${outpng} -x ${min_len} -y ${men_len} -z ${med_len} -d ${__root_dir__} -a $genome['genome_selector']
 	
 #else
-micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b $genome.blacklist['blacklist_file'] -r $ratio -n ${project_name} -f ${format_selector} -p $fdr_or_fp['cmd_option'] -v $fdr_or_fp['fdr'] -w ${selected_peaks_wig_gz} -t ${selected_peaks_txt} -l ${motifs_words_out} -m ${micsa_log} -o ${outpng} -d ${__root_dir__} -a $genome['genome_selector']
+micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b $genome.blacklist['blacklist_file'] -r $ratio -n ${project_name} -f ${format_selector} -p $fdr_or_fp['cmd_option'] -v $fdr_or_fp['fdr'] -w ${selected_peaks_wig_gz} -t ${selected_peaks_txt} -l ${motifs_words_out} -m ${micsa_log} -o ${outpng} -x ${min_len} -y ${men_len} -z ${med_len} -d ${__root_dir__} -a $genome['genome_selector']
 
 #end if
 
@@ -132,7 +132,7 @@ micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b
 		<param name="print_log" type="boolean" truevalue= "True" falsevalue="False" checked="true" label="Print MICSA log"/>
 
 		<conditional name="optional_param">
-			<param name="optional_param_selector" type="select" label=" Set fragment lengths (minimun, median, maximum) help=" These are optional parameters. Please set only if all of them are known.">
+			<param name="optional_param_selector" type="select" label=" Set fragment lengths (minimun, median, maximum)" help=" These are optional parameters. Please set only if all of them are known.">
 				<option value="show" selected="true">Fragment lengths available</option>
 				<option value="hide">Show Optionnal parameters</option>
 			</param>

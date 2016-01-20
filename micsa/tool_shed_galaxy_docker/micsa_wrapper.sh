@@ -52,6 +52,10 @@ l) motif_words_out="$OPTARG";;
 m) LOG="$OPTARG";;
 o) OUTPNG="$OPTARG";;
 
+x) LOW="$OPTARG";;
+y) MED="$OPTARG";;
+z) HIGH="$OPTARG";;
+
 d) ROOT_DIR="$OPTARG";;
 a) BUILD="$OPTARG";;
 esac
@@ -202,8 +206,8 @@ if [[ "$FORMAT" != "bed" ]]; then
 	
 	#both cases, call finpeaks -input $FILE_xxxx , format = sam
 	echo "runing findpeaks now for SAM/BAM..." >> $LOG.tmp
-	java -Xmx2G -jar $PATH_FP/FindPeaks.jar -aligner 'sam' -duplicatefilter -input $FILE_CHIP -name 'chip' -output $OUTDIR/wig -dist_type 1 -minimum 3 >> $LOG.tmp 2>&1
-	java -Xmx2G -jar $PATH_FP/FindPeaks.jar -aligner 'sam' -duplicatefilter -input $FILE_CONTROL -name 'control' -output $OUTDIR/wig -dist_type 1 -minimum 3 >> $LOG.tmp 2>&1
+	java -Xmx2G -jar $PATH_FP/FindPeaks.jar -aligner 'sam' -duplicatefilter -input $FILE_CHIP -name 'chip' -output $OUTDIR/wig -dist_type 1 $MED $HIGH $LOW -minimum 3 >> $LOG.tmp 2>&1
+	java -Xmx2G -jar $PATH_FP/FindPeaks.jar -aligner 'sam' -duplicatefilter -input $FILE_CONTROL -name 'control' -output $OUTDIR/wig -dist_type 1 $MED $HIGH $LOW -minimum 3 >> $LOG.tmp 2>&1
 
 echo "FINISHED FIND PEAKS FOR CONTROL/CHIP" >> $LOG.tmp
 
