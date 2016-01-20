@@ -131,20 +131,18 @@ micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b
 		<param name="print_words" type="boolean" truevalue="True" falsevalue="False" checked="true" label="Print words used for motif construction" />
 		<param name="print_log" type="boolean" truevalue= "True" falsevalue="False" checked="true" label="Print MICSA log"/>
 
-		<conditional name="optional_param">
+		<!--conditional name="optional_param">
 			<param name="optional_param_selector" type="select" label=" Set fragment lengths (minimun, median, maximum)" help=" These are optional parameters. Please set only if all of them are known.">
 				<option value="show" selected="true">Fragment lengths available</option>
-				<option value="hide">Show Optionnal parameters</option>
+				<option value="hide">Hide Optionnal parameters</option>
 			</param>
-			
-			
 			<when value="hide"/>
-			<when value="show"> 
+			<when value="show"--> 
 				<param name="min_len" type="integer" value="0" label="Minumum fragment length used in the ChIP-seq experiment"/>
 				<param name="med_len" type="integer" value="0" label="Median fragment length used in the ChIP-seq experiment"/>
 				<param name="max_len" type="integer" value="0" label="Maximum fragment length used in the ChIP-seq experiment"/>
-			</when>
-		</conditional> 
+			<!--/when>
+		</conditional--> 
 	</inputs>
 	
 <!-- OUTPUT DESCRIPTION -->
