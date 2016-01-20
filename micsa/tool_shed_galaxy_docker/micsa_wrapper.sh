@@ -4,7 +4,7 @@
 
 :<< 'HEYthere'
 * check the logs in case of error:
- 	- go to : /bioinfo/http/prod/hosted/nebula.curie.fr/galaxy-dist/database/files/XXX
+ 	- go to : ../galaxy/database/files/XXX
  	- see log.tmp (.tmp): step echos, stderr of all commands... 
  
 * working directory for MICSA is : $OUTDIR/wig, contains the ouputs and logs 
