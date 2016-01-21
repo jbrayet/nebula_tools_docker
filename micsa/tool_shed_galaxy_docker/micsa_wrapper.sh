@@ -19,7 +19,7 @@ micsa_wrapper.sh -i ${chip_file} -c ${control_file} -g $genome['genome_path'] -b
 
 ** arguments to add if optional length parameters are added :
 
-in xml : -x ${min_len} -y ${men_len} -z ${med_len}
+in xml : -x ${min_len} -y ${med_len} -z ${max_len}
 
 in wrapper.sh :
 

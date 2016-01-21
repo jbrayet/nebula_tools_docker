@@ -50,6 +50,7 @@ RUN make
 RUN make install
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/create_annotation_files.sh -P /usr/bin
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/splitChr.pl -P /usr/bin
+WORKDIR /usr/bin/micsa
 
 ##################### INSTALLATION END #####################
 
