@@ -49,6 +49,7 @@ def main():
     process=subprocess.Popen(cmd, shell=True)
     process.wait()
 
+    chrom_info_file=nebulaGenomePath+"/"+genome+".len"
     
     tmp_dir = tempfile.mkdtemp()
     try:
