@@ -23,6 +23,7 @@ def main():
     output_region_file = sys.argv[7]
     output_top_file = sys.argv[8]
     output_log_file = sys.argv[9]
+    root_dir = sys.argv[10]
     
     ###### CREATE ANNOTATION FILES #########
     databasePath = root_dir+"/database/files"

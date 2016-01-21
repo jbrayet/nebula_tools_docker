@@ -10,7 +10,7 @@
   '${ options_type.input_config_file.fields.path }'
   #end if
   'CCAT' 
-  '$output_peak_file' '$output_region_file' '$output_top_file' '$output_log_file'</command>
+  '$output_peak_file' '$output_region_file' '$output_top_file' '$output_log_file' '${__root_dir__}'</command>
   <inputs>
     <param name="input_tag_file" type="data" format="bed" label="ChIP-Seq Tag File" >
       <validator type="unspecified_build" />
