@@ -30,7 +30,7 @@
         <option value="advanced">Show Advanced Options</option>
       </param>
       <when value="basic">
-        <param name="input_config_file" type="data" label="Select a pre-defined configuration file" />
+        <param name="input_config_file" type="data" format="txt" label="Select a pre-defined configuration file" />
       </when>
       <when value="advanced">
         <param name="fragment_size" type="integer" label="Length of DNA fragment" value="200"/>
