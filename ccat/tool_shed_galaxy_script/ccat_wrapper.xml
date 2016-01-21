@@ -7,7 +7,7 @@
   #if str( $options_type[ 'options_type_selector' ] ) == 'advanced':
   '$input_advanced_config_file' 
   #else:
-  '${ options_type.input_config_file.fields.path }'
+  '$options_type.input_config_file'
   #end if
   'CCAT' 
   '$output_peak_file' '$output_region_file' '$output_top_file' '$output_log_file' '${__root_dir__}'</command>
@@ -30,11 +30,7 @@
         <option value="advanced">Show Advanced Options</option>
       </param>
       <when value="basic">
-        <param name="input_config_file" type="select" label="Select a pre-defined configuration file">
-          <options from_data_table="ccat_configurations">
-            <validator type="no_options" message="No configurations are available"/>
-          </options>
-        </param>
+        <param name="input_config_file" type="txt" label="Select a pre-defined configuration file" />
       </when>
       <when value="advanced">
         <param name="fragment_size" type="integer" label="Length of DNA fragment" value="200"/>
