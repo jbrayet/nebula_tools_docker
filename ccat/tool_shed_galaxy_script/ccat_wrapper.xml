@@ -1,4 +1,4 @@
-<tool id="peakcalling_ccat" name="CCAT" version="0.0.1">
+<tool id="peakcalling_ccat" name="CCAT" version="0.1">
   <description>Control-based ChIP-seq Analysis Tool</description>
   <requirements>
   	<container type="docker">institutcuriengsintegration/ccat:1.0</container>
@@ -7,17 +7,13 @@
   #if str( $options_type[ 'options_type_selector' ] ) == 'advanced':
   '$input_advanced_config_file' 
   #else:
-  '$options_type.input_config_file'
+  $options_type[ 'input_config_file' ]
   #end if
   'CCAT' 
   '$output_peak_file' '$output_region_file' '$output_top_file' '$output_log_file' '${__root_dir__}'</command>
   <inputs>
-    <param name="input_tag_file" type="data" format="bed" label="ChIP-Seq Tag File" >
-      <validator type="unspecified_build" />
-    </param>
-    <param name="input_control_file" type="data" format="bed" label="ChIP-Seq Control File" >
-      <validator type="unspecified_build" />
-    </param>
+    <param name="input_tag_file" type="data" format="bed" label="ChIP-Seq Tag File" />
+    <param name="input_control_file" type="data" format="bed" label="ChIP-Seq Control File" />
     <param name="genome" type="select" label="Genome" >
         <option value="hg19" selected="True">Human (hg19)</option>
         <option value="mm10" >Mouse (mm10)</option>
@@ -85,36 +81,6 @@ minScore	${options_type[ 'min_score' ]}
 bootstrapPass	${options_type[ 'bootstrap_pass' ]}
 #end if</configfile>
   </configfiles>
-  <tests>
-    <test>
-      <param name="input_tag_file" value="chipseq_enriched.bed.gz" ftype="bed" dbkey="hg18" />
-      <param name="input_control_file" value="chipseq_input.bed.gz" ftype="bed" dbkey="hg18" />
-      <param name="options_type_selector" value="advanced" />
-      <param name="fragment_size" value="200" />
-      <param name="sliding_window_size" value="500" />
-      <param name="moving_step" value="50" />
-      <param name="is_strand_sensitive_mode" value="0" />
-      <param name="min_count" value="4" />
-      <param name="output_num" value="100000" />
-      <param name="random_seed" value="123456" />
-      <param name="min_score" value="5.0" />
-      <param name="bootstrap_pass" value="50" />
-      <output name="output_peak_file" file="peakcalling_ccat/3.0/ccat_test_peak_out_1.interval.re_match" compare="re_match" />
-      <output name="output_region_file" file="peakcalling_ccat/3.0/ccat_test_region_out_1.interval.re_match" compare="re_match" />
-      <output name="output_top_file" file="peakcalling_ccat/3.0/ccat_test_top_out_1.interval.sorted.re_match" compare="re_match" sort="True" />
-      <output name="output_log_file" file="peakcalling_ccat/3.0/ccat_test_log_out_1.txt" />
-    </test>
-    <test>
-      <param name="input_tag_file" value="chipseq_enriched.bed.gz" ftype="bed" dbkey="hg18" />
-      <param name="input_control_file" value="chipseq_input.bed.gz" ftype="bed" dbkey="hg18" />
-      <param name="options_type_selector" value="basic" />
-      <param name="input_config_file" value="ccat_3.0_histone_config" />
-      <output name="output_peak_file" file="peakcalling_ccat/3.0/ccat_test_peak_out_1.interval.re_match" compare="re_match" />
-      <output name="output_region_file" file="peakcalling_ccat/3.0/ccat_test_region_out_1.interval.re_match" compare="re_match" />
-      <output name="output_top_file" file="peakcalling_ccat/3.0/ccat_test_top_out_1.interval.sorted.re_match" compare="re_match" sort="true" />
-      <output name="output_log_file" file="peakcalling_ccat/3.0/ccat_test_log_out_1.txt" />
-    </test>
-  </tests>
   <help>
 **What it does**
 
