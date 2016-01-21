@@ -31,6 +31,9 @@ WORKDIR /usr/bin/ccat
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/CCAT3.0.tar.gz -P /usr/bin/ccat
 RUN tar -zxvf CCAT3.0.tar.gz
 RUN rm -f CCAT3.0.tar.gz
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/create_annotation_files.sh -P /usr/bin
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/splitChr.pl -P /usr/bin
+WORKDIR /usr/bin/ccat
 
 ##################### INSTALLATION END #####################
 

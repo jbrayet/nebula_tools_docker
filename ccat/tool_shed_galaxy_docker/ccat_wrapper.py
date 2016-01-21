@@ -16,13 +16,38 @@ def main():
     CCAT_BINARY = "/usr/bin/ccat/CCAT3.0/bin/CCAT"
     input_tag_file = sys.argv[1]
     input_control_file = sys.argv[2]
-    chrom_info_file = sys.argv[3]
+    genome = sys.argv[3]
     input_config_file = sys.argv[4]
     project_name = sys.argv[5]
     output_peak_file = sys.argv[6]
     output_region_file = sys.argv[7]
     output_top_file = sys.argv[8]
     output_log_file = sys.argv[9]
+    
+    ###### CREATE ANNOTATION FILES #########
+    databasePath = root_dir+"/database/files"
+    
+    subprocess.Popen('mkdir -p '+databasePath+'/nebulaAnnotations', shell=True)
+    subprocess.Popen('mkdir -p '+databasePath+'/nebulaAnnotations/'+genome, shell=True)
+
+    nebulaGenomePath=databasePath+"/nebulaAnnotations/"+genome
+
+    FAIFILE='n'
+    LENFILE='n'
+    DICTFILE='n'
+    CHROFILE='n'
+    MAPFILE='n'
+    
+    if not os.path.isfile(nebulaGenomePath+"/"+genome+".len"):
+        FAIFILE='y'
+        LENFILE='y'
+        
+    FILEPATH=databasePath.replace("database/files","tool-data")
+
+    cmd='bash /usr/bin/create_annotation_files.sh '+FAIFILE+" "+LENFILE+" "+DICTFILE+" "+CHROFILE+" "+FILEPATH+" "+genome+" "+MAPFILE+" "+nebulaGenomePath
+    process=subprocess.Popen(cmd, shell=True)
+    process.wait()
+
     
     tmp_dir = tempfile.mkdtemp()
     try:
