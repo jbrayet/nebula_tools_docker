@@ -1,0 +1,93 @@
+<!--create control subset - developed by Jocelyn Brayet <jocelyn.brayet@curie.fr>
+Copyright (C) 2015  Institut Curie
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.-->
+<tool id="createControlSubset" name="Get Subset for ChIP Control" version="1.0">
+  <description> </description>
+  <requirements>
+    <container type="docker">institutcuriengsintegration/controlsubset:1.0</container>
+  </requirements>
+  <command interpreter="bash">
+#if $input_type.input_type_selector == "bam" #createControlSubSet_wrapper.sh -f $inputfile -c $controlfile -t $input_type.input_type_selector -o $BAMcontrolOutBAM -s $BAMsampleOutBAM -q $if_Process_Sample -p "No" #elif $input_type.input_type_selector == "sam" #createControlSubSet_wrapper.sh -f $inputfile -c $controlfile -t $input_type.input_type_selector -o $SAMcontrolOut -s $SAMsampleOut -q $if_Process_Sample #else #createControlSubSet_wrapper.sh -f $inputfile -c $controlfile -t $input_type.input_type_selector -o $ELANDcontrolOut -s $ELANDsampleOut -q $if_Process_Sample  #end if
+ </command>
+
+   <inputs>
+    <conditional name="input_type">
+    <param name="input_type_selector" type="select" label="Alignment Format">
+        <option value="eland" selected="true">Eland</option>
+        <option value="sam">SAM</option>
+        <option value="bam">BAM</option>
+    </param>
+    <when value="eland">
+    <param name="inputfile" type="data" label="ChIP-Seq Tag File" value="ChIP-Seq Tag File" format="eland"/>
+    <param name="controlfile" type="data" label="Control Tag File" value="Control Tag File" format="eland"/>
+
+    </when>
+    <when value="sam">
+    <param name="inputfile" type="data" label="ChIP-Seq Tag File" value="ChIP-Seq Tag File" format="sam"/>
+    <param name="controlfile" type="data" label="Control Tag File" value="Control Tag File" format="sam"/>
+
+    </when>
+    <when value="bam">
+    <param name="inputfile" type="data" label="ChIP-Seq Tag File" value="ChIP-Seq Tag File" format="bam"/>
+    <param name="controlfile" type="data" label="Control Tag File" value="Control Tag File" format="bam"/>
+ <!--   <param name="if_OutPut_In_Sam" type="boolean" label="Do you want to get the output in SAM instead of BAM?" help="recommended if you want to run FindPeaks on it" truevalue="Yes" falsevalue="No" checked="False"/>
+-->
+    </when>
+    </conditional>
+
+
+    <param name="if_Process_Sample" type="boolean" label="Do you want to filter duplicates in the ChIP dataset?" truevalue="Yes" falsevalue="No" checked="False"/>
+
+
+  </inputs>
+  <outputs>
+    <data name="ELANDcontrolOut" format="eland" label="Subset for Control">
+    <filter>(input_type['input_type_selector'] == 'eland')</filter>
+    </data>
+    <data name="SAMcontrolOut" format="sam" label="Subset for Control">
+    <filter>(input_type['input_type_selector'] == 'sam')</filter>
+    </data>
+
+    <data name="BAMcontrolOutBAM" format="bam" label="Subset for Control">
+    <filter>(input_type['input_type_selector'] == 'bam')</filter>    
+    </data>
+
+
+    <data name="ELANDsampleOut" format="eland" label="Subset for ChIP">    
+      <filter>if_Process_Sample == True</filter>
+      <filter>(input_type['input_type_selector'] == 'eland')</filter>
+    </data>
+    <data name="SAMsampleOut" format="sam" label="Subset for ChIP">    
+      <filter>if_Process_Sample == True</filter>
+      <filter>(input_type['input_type_selector'] == 'sam')</filter>
+    </data>
+
+  <data name="BAMsampleOutBAM" format="bam" label="Subset for ChIP">    
+      <filter>if_Process_Sample == True</filter>
+      <filter>(input_type['input_type_selector'] == 'bam')</filter>
+    </data>
+
+  </outputs>
+  <help>
+**What it does**
+
+This tool does preprocessing of ChIP-seq aligned reads before calling FindPeaks:
+
+Filter out dulpicates from the SAMPLE (optional) and create a CONTROL dataset w/o duplicates with the same number of reads as in the SAMPLE
+
+Only eland, sam and bam files are accepted.
+
+  </help>
+</tool>
