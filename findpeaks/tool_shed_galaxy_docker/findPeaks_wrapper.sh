@@ -77,7 +77,7 @@ if [[ $ALIGNER == "sam" && $IFBAM == 1 ]]; then
 
  #echo "sort bam" >>/data/tmp/tmp.log
  echo "samtools sort -m 4000000000 -o $INPUT $TMPSORTED 2>> $OUTDIR/$NAME.log | samtools view -h - >$FILE 2>> $OUTDIR/$NAME.log" >>/dev/null
- samtools sort -m 	4000000000 -o $INPUT $TMPSORTED 2>> $OUTDIR/$NAME.log | samtools view -h - > $FILE 2>> $OUTDIR/$NAME.log
+ samtools sort -m 4000000000 -o $INPUT $TMPSORTED 2>> $OUTDIR/$NAME.log | samtools view -h - > $FILE 2>> $OUTDIR/$NAME.log
 fi
  
 echo "java -Xmx20G -jar $PATH_FP/FindPeaks.jar -aligner $FORMAT -duplicatefilter -no_peaks_header$PREPS -dist_type 1 $MED $HIGH $LOW -input $FILE -minimum $MIN -name $NAME -output $OUTDIR -subpeaks $SUBPEAKS -wig_step_size $WIGSTEP 2>> $OUTDIR/$NAME.log >> $OUTDIR/$NAME.log" >>/dev/null

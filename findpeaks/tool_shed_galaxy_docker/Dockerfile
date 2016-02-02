@@ -22,8 +22,7 @@ RUN apt-get update && \
       build-essential \
       wget \
       samtools \
-      default-jre \
-      csh && \
+      default-jre && \
     apt-get clean && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
