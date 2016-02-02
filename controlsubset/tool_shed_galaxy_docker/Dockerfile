@@ -28,7 +28,7 @@ RUN apt-get update && \
 
 RUN mkdir /usr/bin/controlsubset
 WORKDIR /usr/bin/controlsubset
-RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/controlsubset/tool_shed_galaxy_docker/createControlSubset.pl -P /usr/bin/controlsubset
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/controlsubset/tool_shed_galaxy_script/createControlSubSet.pl -P /usr/bin/controlsubset
 
 ##################### INSTALLATION END #####################
 

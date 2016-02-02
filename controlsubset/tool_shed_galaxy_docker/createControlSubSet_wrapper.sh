@@ -16,7 +16,7 @@ p) IFOUTSAM="$OPTARG";;
 esac
 done
 
-local_path=$(dirname $(readlink -f $0))
+local_path=/usr/bin/controlsubset
 
 LOGTMP=$IFOUTSAM.log.tmp
 
