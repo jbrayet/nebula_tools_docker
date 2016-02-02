@@ -1,0 +1,38 @@
+<tool id="peakcalling_findpeaks" name="FindPeaks" version="4.0.9.2">
+  <description>a Peak Finder/Analysis application for the ChIP-Seq</description>
+  <requirements>
+    <container type="docker">institutcuriengsintegration/findpeaks:1.0</container>
+  </requirements>
+  <command interpreter="bash">findPeaks_wrapper.sh -r $log -p $peaks -w $wig -a $input_type_selector -m $median_fragment_length -e $if_Prepend -h $high -l $low -i $inputfile -k $minimumH -n $name -s $subpeaks -y 1
+ </command>
+   <inputs>
+    <param name="input_type_selector" type="select" label="Alignment Format">
+        <option value="mapview">MapView (MAQ)</option>
+        <option value="maq">Map (MAQ)</option>
+        <option value="sam" selected="true">SAM/BAM</option>
+        <option value="sam-filter">SAM/BAM, skips reads that contain indels </option>
+        <option value="sam-ignore-deletion">SAM/BAM ignores the indels in the reads </option>
+    </param>
+    <param name="median_fragment_length" type="integer" label="Median Fragment Length" value="174"/>     
+    <param name="low" type="integer" label="Minimal Fragment Length" value="100"/>         
+    <param name="high" type="integer" label="Maximal Fragment Length" value="300"/>       
+    <param name="minimumH" type="integer" label="Minimal Peak Height" value="3"/>      
+    <param name="subpeaks" type="float" label="Value to perform peak separation" value=".2"/> 
+    <param name="if_Prepend" type="boolean" label="Prepend chromosome names with 'chr'?" truevalue="Yes" falsevalue="No" checked="False" help="This allows the user to prepend a string to chromosome names in the Wig files generated. If your reference genome files are labeled as 1.fa, 2.fa, etc, then you will need to prepend the string chr for the chromosome name to be recognized by the UCSC Genome Browser."/>
+   <!-- <param name="wig_step_size" type="integer" label="Wig Step Size" value="10"/>   
+   --> 
+    <param name="inputfile" type="data" label="ChIP-Seq Tag File" value="ChIP-Seq Tag File" format="bed,bowtie,gff,eland,elandext,gff,mapview,maq,sam,bam,txt,bwtmap,elandmulti"/>
+    <param name="name" type="text" label="type of experiment" value="chip"/>
+   <!--  <param name="outputPath" type="text" size="60" label="Output path (Analysis folder, and NOT your Home directory)"/> HARDCORED: /data/tmp/atelierINSERM --> 
+  </inputs>
+  <outputs>
+    <data name="peaks" format="txt" label="${tool.name} for ${name} (peaks: .peaks)"/>
+    <data name="log" format="log" label="${tool.name} for ${name} (report)"/>
+    <data name="wig" format="gzip" label="${tool.name} for ${name} (wig)"/>
+  </outputs>
+  <help>
+**What it does**
+
+runs FINDPEAKS (http://sourceforge.net/apps/mediawiki/vancouvershortr/)
+  </help>
+</tool>
