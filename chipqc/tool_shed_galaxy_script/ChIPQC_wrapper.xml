@@ -1,0 +1,40 @@
+<tool id="makeStatsChIPSeq" name="Get peak height distribution" version="1.0">
+  <description> </description>
+  <requirements>
+    <container type="docker">institutcuriengsintegration/chipqc:1.0</container>
+  </requirements>
+  <command interpreter="bash">
+#if str( $ifPDF ) == 'Yes' #makeStatsChIPSeq_wrapper.sh -f $inputfile -c $controlfile -m $minHeight -o $outputPDF -s $maxHeight -u $stats -p 1 #else #  makeStatsChIPSeq_wrapper.sh -f $inputfile -c $controlfile -m $minHeight -o $outputPNG -s $maxHeight -u $stats -p 0 #end if 1>/dev/null 2>/dev/null
+ </command>
+   <inputs>
+   
+    <param name="inputfile" type="data" label="ChIP: File with peaks" value="ChIP-Seq File" format="txt"/>
+    <param name="controlfile" type="data" label="Control: File with peaks" value="Control File" format="txt"/>
+    <param name="minHeight" type="integer" label="Minimal peak height to consider" value="3"/>
+    <param name="maxHeight" type="integer" label="Maximal peak height to consider" value="50"/>
+
+    <param name="ifPDF" type="select" label="Do you want to have a PDF image (default PNG)?">
+        <option value="No" selected="true">No</option>
+        <option value="Yes">Yes</option>
+    </param>
+
+  </inputs>
+  <outputs>
+
+    <data name="stats" format="tabular" label="Peak height distribution (stats)"/>   
+
+    <data name="outputPNG" format="png" label="Peak height distribution (png)">
+    <filter>(ifPDF == "No")</filter>
+    </data>
+    <data name="outputPDF" format="pdf" label="Peak height distribution (pdf)">
+    <filter>(ifPDF == "Yes")</filter>
+    </data>
+
+  </outputs>
+  <help>
+**What it does**
+
+This tool creates a .png (or .pdf) file with distribution of peaks heights for ChIP and Control sample
+
+  </help>
+</tool>
