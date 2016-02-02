@@ -27,8 +27,8 @@
   </inputs>
   <outputs>
     <data name="peaks" format="txt" label="${tool.name} for ${name} (peaks: .peaks)"/>
-    <data name="log" format="log" label="${tool.name} for ${name} (report)"/>
-    <data name="wig" format="gzip" label="${tool.name} for ${name} (wig)"/>
+    <data name="log" format="txt" label="${tool.name} for ${name} (report)"/>
+    <data name="wig" format="gzip" label="${tool.name} for ${name} (wig.gz)"/>
   </outputs>
   <help>
 **What it does**

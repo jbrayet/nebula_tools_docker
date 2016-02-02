@@ -23,7 +23,7 @@ done
 
 #echo "$@" > /data/tmp/tmp.log
 
-PATH_FP="/usr/bin/micsa/VancouverPackage-4.0.9.2/jars/fp4"
+PATH_FP="/usr/bin/findpeaks/VancouverPackage-4.0.9.2/jars/fp4"
 
 PREPS=" -prepend chr"
 
