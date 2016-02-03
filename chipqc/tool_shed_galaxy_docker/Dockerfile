@@ -26,7 +26,8 @@ RUN apt-get update && \
       libxt-dev \
       xorg-dev \
       libpango1.0-dev \
-      libcairo-dev && \   
+      libcairo-dev \
+      ca-certificates && \   
     apt-get clean && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
