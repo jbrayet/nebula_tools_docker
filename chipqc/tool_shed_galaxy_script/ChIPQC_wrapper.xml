@@ -4,7 +4,7 @@
     <container type="docker">institutcuriengsintegration/chipqc:1.0</container>
   </requirements>
   <command interpreter="bash">
-#if str( $ifPDF ) == 'Yes' #makeStatsChIPSeq_wrapper.sh -f $inputfile -c $controlfile -m $minHeight -o $outputPDF -s $maxHeight -u $stats -p 1 #else #  makeStatsChIPSeq_wrapper.sh -f $inputfile -c $controlfile -m $minHeight -o $outputPNG -s $maxHeight -u $stats -p 0 #end if 1>/dev/null 2>/dev/null
+#if str( $ifPDF ) == 'Yes' #ChIPQC_wrapper.sh -f $inputfile -c $controlfile -m $minHeight -o $outputPDF -s $maxHeight -u $stats -p 1 #else #  ChIPQC_wrapper.sh -f $inputfile -c $controlfile -m $minHeight -o $outputPNG -s $maxHeight -u $stats -p 0 #end if 1>/dev/null 2>/dev/null
  </command>
    <inputs>
    

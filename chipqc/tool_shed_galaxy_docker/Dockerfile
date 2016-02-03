@@ -36,7 +36,7 @@ RUN mkdir /usr/bin/ChIPQC
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/chipqc/tool_shed_galaxy_script.tar.gz -P /usr/bin/ChIPQC
 WORKDIR /usr/bin/ChIPQC
 RUN tar -xvf tool_shed_galaxy_script.tar.gz && rm tool_shed_galaxy_script.tar.gz
-RUN mv tool_shed_galaxy_script/* . && rm -rf tool_shed_galaxy_script annotatePeaks_wrapper* tool_dependencies.xml
+RUN mv tool_shed_galaxy_script/* . && rm -rf tool_shed_galaxy_script ChIPQC_wrapper* tool_dependencies.xml
 
 WORKDIR /usr/bin/ChIPQC
 

@@ -15,16 +15,10 @@ p) PDF="$OPTARG";;
 esac
 done
 
-LOGTMP=$OUTPUT.log.tmp
-
 local_path=/usr/bin/ChIPQC
 R_PATH='Rscript --slave '
 
-#LOGTMP=/data/tmp/log.tmp
-
 echo "$@" > $LOGTMP
-echo "$R_PATH $local_path/ChIPQC.R --args $MINVAL $MAXVAL $CHIPFILE $CONTROLFILE $OUTPUT $OUTSTAT $PDF" >>$LOGTMP
-$R_PATH $local_path/ChIPQC.R --args $MINVAL $MAXVAL $CHIPFILE $CONTROLFILE $OUTPUT $OUTSTAT $PDF >>$LOGTMP
-if [ -r $LOGTMP ]; then
-  rm $LOGTMP
-fi
+echo "$R_PATH $local_path/ChIPQC.R --args $MINVAL $MAXVAL $CHIPFILE $CONTROLFILE $OUTPUT $OUTSTAT $PDF"
+$R_PATH $local_path/ChIPQC.R --args $MINVAL $MAXVAL $CHIPFILE $CONTROLFILE $OUTPUT $OUTSTAT $PDF
+
