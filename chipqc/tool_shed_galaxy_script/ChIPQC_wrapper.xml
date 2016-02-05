@@ -1,5 +1,5 @@
-<tool id="makeStatsChIPSeq" name="Get peak height distribution" version="1.0">
-  <description> </description>
+<tool id="makeStatsChIPSeq" name="ChIPQC" version="1.0">
+  <description>Get peak height distribution</description>
   <requirements>
     <container type="docker">institutcuriengsintegration/chipqc:1.0</container>
   </requirements>
