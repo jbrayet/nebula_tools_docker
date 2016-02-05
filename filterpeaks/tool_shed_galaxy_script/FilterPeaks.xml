@@ -1,0 +1,47 @@
+<tool id="filterControl" name="Filter FindPeaks output (.peaks) using Control Peaks" version="1.0">
+  <description> </description>
+  <command interpreter="bash">
+#if $if_bed.if_bed_selector == "no" #FilterControlPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $output -m $minHeightControl -w $outputC #else #  FilterControlPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $outputB -m $minHeightControl -w $outputBC -q $if_bed.nameControl -n $if_bed.nameChIP -l ${GALAXY_DATA_INDEX_DIR}/shared/ucsc/chrom/${inputfile.dbkey}.len #end if
+ </command>
+   <inputs>
+   
+    <param name="inputfile" type="data" label="ChIP: File with peaks" value="ChIP-Seq File" format="txt"/>
+    <param name="controlfile" type="data" label="Control: File with peaks" value="Control File" format="txt"/>
+    <param name="minHeight" type="integer" label="Minimal peak height to consider for the ChIP dataset" value="8"/>
+    <param name="minHeightControl" type="integer" label="Minimal peak height to consider for the Control dataset" value="4"/>
+    <param name="minRatio" type="float" label="Minimal ratio ChIP/Control" value="1.6"/>
+
+   <conditional name="if_bed">
+    <param name="if_bed_selector" type="select" label="Do you want the output in .BED format" help="By default the output will be in .PEAKS format of FindPeaks">
+        <option value="no" selected="true">No</option>
+        <option value="yes">Yes</option>
+    </param>
+    <when value="yes">
+    <param name="nameChIP" type="text" label="header for ChIP .bed file" value="ChIP name"/>
+    <param name="nameControl" type="text" label="header for Control .bed file" value="Control name"/>
+    </when>    
+    </conditional>
+
+
+  </inputs>
+  <outputs>
+    <data name="output" format="txt" label="filtered peaks for ChIP (.peaks)">
+      <filter>(if_bed['if_bed_selector'] == 'no')</filter>
+    </data>   
+    <data name="outputC" format="txt" label="filtered peaks for Control (.peaks)">
+      <filter>(if_bed['if_bed_selector'] == 'no')</filter>
+    </data>
+    <data name="outputB" format="bed" label="filtered peaks for ChIP (.bed)">   
+       <filter>(if_bed['if_bed_selector'] == 'yes')</filter>
+    </data>
+    <data name="outputBC" format="bed" label="filtered peaks for Control (.bed)">   
+       <filter>(if_bed['if_bed_selector'] == 'yes')</filter>
+    </data>
+  </outputs>
+  <help>
+**What it does**
+
+Filters out peaks present both in ChIP and Control dataset
+
+  </help>
+</tool>
