@@ -1,7 +1,10 @@
-<tool id="filterControl" name="Filter FindPeaks output (.peaks) using Control Peaks" version="1.0">
-  <description> </description>
+<tool id="filterControl" name="Filter Peaks" version="1.0">
+  <description>Filter FindPeaks output (.peaks) using Control Peaks</description>
+  <requirements>
+    <container type="docker">institutcuriengsintegration/filterpeaks:1.0</container>
+  </requirements>
   <command interpreter="bash">
-#if $if_bed.if_bed_selector == "no" #FilterControlPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $output -m $minHeightControl -w $outputC #else #  FilterControlPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $outputB -m $minHeightControl -w $outputBC -q $if_bed.nameControl -n $if_bed.nameChIP -l ${GALAXY_DATA_INDEX_DIR}/shared/ucsc/chrom/${inputfile.dbkey}.len #end if
+#if $if_bed.if_bed_selector == "no" #FilterPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $output -m $minHeightControl -w $outputC #else #  FilterPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $outputB -m $minHeightControl -w $outputBC -q $if_bed.nameControl -n $if_bed.nameChIP -l ${GALAXY_DATA_INDEX_DIR}/shared/ucsc/chrom/${inputfile.dbkey}.len #end if
  </command>
    <inputs>
    

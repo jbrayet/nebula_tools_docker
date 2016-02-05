@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <tool_dependency>
-    <package name="docker_findpeaks" version="0.1">
+    <package name="docker_filterpeaks" version="0.1">
         <install version="1.0">
             <actions>
-                <action type="shell_command">docker pull institutcuriengsintegration/findpeaks:1.0</action>
+                <action type="shell_command">docker pull institutcuriengsintegration/filterpeaks:1.0</action>
             </actions>
         </install>
         <readme>

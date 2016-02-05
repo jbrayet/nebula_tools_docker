@@ -1,15 +1,15 @@
 # Dockerfile
 #
 # Version:          1.0
-# Software:         Find Peaks
-# Software Version: 4.0.9.2
-# Description:      Peak Finder/Analysis application for the ChIP-Seq.
+# Software:         Filter Peaks
+# Software Version: 1.0
+# Description:      Filters out peaks present both in ChIP and Control dataset.
 # Website:          http://nebula.curie.fr
 # Tags:             NGS: Peak Calling
 # Provides:         Nebula
-# Build Cmd:        docker build --rm -t institutcuriengsintegration/findpeaks:1.0 .
-# Pull Cmd:         docker pull institutcuriengsintegration/findpeaks:1.0
-# Run Cmd:          docker run --rm -it institutcuriengsintegration/findpeaks:1.0 <options> <files>
+# Build Cmd:        docker build --rm -t institutcuriengsintegration/filterpeaks:1.0 .
+# Pull Cmd:         docker pull institutcuriengsintegration/filterpeaks:1.0
+# Run Cmd:          docker run --rm -it institutcuriengsintegration/filterpeaks:1.0 <options> <files>
 #################################################################
 
 # Set the base image to Ubuntu
