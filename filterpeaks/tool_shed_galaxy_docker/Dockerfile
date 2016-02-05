@@ -30,6 +30,7 @@ RUN apt-get update && \
 RUN mkdir /usr/bin/filterpeaks
 WORKDIR /usr/bin/filterpeaks
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/FilterPeaks.class -P /usr/bin/filterpeaks
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/filterpeaks/tool_shed_galaxy_script/peak2bed.pl -P /usr/bin/filterpeaks
 WORKDIR /usr/bin/filterpeaks
 
 ##################### INSTALLATION END #####################
