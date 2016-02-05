@@ -27,12 +27,10 @@ RUN apt-get update && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir /usr/bin/findpeaks
-WORKDIR /usr/bin/findpeaks
-RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/VancouverPackage-4.0.9.2.tar.gz -P /usr/bin/findpeaks
-RUN tar -zxvf VancouverPackage-4.0.9.2.tar.gz
-RUN rm -f VancouverPackage-4.0.9.2.tar.gz
-WORKDIR /usr/bin/findpeaks
+RUN mkdir /usr/bin/filterpeaks
+WORKDIR /usr/bin/filterpeaks
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/FilterPeaks.class -P /usr/bin/filterpeaks
+WORKDIR /usr/bin/filterpeaks
 
 ##################### INSTALLATION END #####################
 
