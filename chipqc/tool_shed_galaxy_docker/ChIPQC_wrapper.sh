@@ -18,7 +18,6 @@ done
 local_path=/usr/bin/ChIPQC
 R_PATH='Rscript --slave '
 
-echo "$@" > $LOGTMP
 echo "$R_PATH $local_path/ChIPQC.R --args $MINVAL $MAXVAL $CHIPFILE $CONTROLFILE $OUTPUT $OUTSTAT $PDF"
 $R_PATH $local_path/ChIPQC.R --args $MINVAL $MAXVAL $CHIPFILE $CONTROLFILE $OUTPUT $OUTSTAT $PDF
 
