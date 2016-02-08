@@ -4,7 +4,13 @@
     <container type="docker">institutcuriengsintegration/filterpeaks:1.0</container>
   </requirements>
   <command interpreter="bash">
-#if $if_bed.if_bed_selector == "no" #FilterPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $output -m $minHeightControl -w $outputC #else #  FilterPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $outputB -m $minHeightControl -w $outputBC -q $if_bed.nameControl -n $if_bed.nameChIP -l ${GALAXY_DATA_INDEX_DIR}/shared/ucsc/chrom/${inputfile.dbkey}.len #end if
+  FilterPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $output -m $minHeightControl -w $outputC -r ${__root_dir__}
+  
+  #if $if_bed.if_bed_selector == "yes"
+    -q $if_bed.nameControl 
+    -n $if_bed.nameChIP 
+    -l $if_bed.genome_selector
+  #end if
  </command>
    <inputs>
    
@@ -20,6 +26,12 @@
         <option value="yes">Yes</option>
     </param>
     <when value="yes">
+    <param name="genome_selector" type="select" label="Select the genome under study">
+        <option value="hg19" selected="true">hg19</option>	
+        <option value="hg18">hg18</option>
+        <option value="mm9">mm9</option>   
+        <option value="mm10">mm10</option>    
+    </param>
     <param name="nameChIP" type="text" label="header for ChIP .bed file" value="ChIP name"/>
     <param name="nameControl" type="text" label="header for Control .bed file" value="Control name"/>
     </when>    
