@@ -2,17 +2,18 @@
 
 nameBed=" "
 
-while getopts "f:c:t:v:o:m:w:r:n::q::l::" optionName; do
+while getopts "f:c:t:v:m:r:o:w:b::n::q::l::" optionName; do
 case "$optionName" in
 
 f) inputfile="$OPTARG";;
 c) controlfile="$OPTARG";;
 t) minHeight="$OPTARG";;
 v) minRatio="$OPTARG";;
-o) output="$OPTARG";;
 m) minHeightControl="$OPTARG";;
-w) outputControl="$OPTARG";;
 r) ROOT_DIR="$OPTARG";;
+o) output="$OPTARG";;
+w) outputControl="$OPTARG";;
+b) BEDFILE="$OPTARG";;
 n) nameBed="$OPTARG";;
 q) nameBedControl="$OPTARG";;
 l) BUILD="$OPTARG";;
@@ -31,7 +32,7 @@ echo "java -classpath local_path/ -Xmx6g FilterPeaks -f $inputfile -c $controlfi
 java -classpath $local_path/ -Xmx6g FilterPeaks -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $output 
 java -classpath $local_path/ -Xmx6g FilterPeaks -c $inputfile -f $controlfile -t $minHeightControl -v $minRatio -o $outputControl
 
-if [ ! "$nameBed" == " " ]; then
+if [ "$BEDFILE" == "yes" ]; then
 
   ############### Create annotations files ################
 

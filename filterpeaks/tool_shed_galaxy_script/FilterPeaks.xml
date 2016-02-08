@@ -7,14 +7,15 @@
   FilterPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -m $minHeightControl -r ${__root_dir__}
   
   #if $if_bed.if_bed_selector == "yes"
-    -o $outputB 
-    -w $outputBC 
-    -q $if_bed.nameControl 
-    -n $if_bed.nameChIP 
+    -o $outputB
+    -w $outputBC
+    -b $if_bed.if_bed_selector
+    -q $if_bed.nameControl
+    -n $if_bed.nameChIP
     -l $if_bed.genome_selector
   #else
-    -o $output 
-    -w $outputC 
+    -o $output
+    -w $outputC
   #end if
  </command>
    <inputs>
@@ -37,8 +38,8 @@
         <option value="mm9">mm9</option>   
         <option value="mm10">mm10</option>    
     </param>
-    <param name="nameChIP" type="text" label="header for ChIP .bed file" value="ChIP name"/>
-    <param name="nameControl" type="text" label="header for Control .bed file" value="Control name"/>
+    <param name="nameChIP" type="text" label="header for ChIP .bed file" value="ChIP_name"/>
+    <param name="nameControl" type="text" label="header for Control .bed file" value="Control_name"/>
     </when>    
     </conditional>
 
