@@ -4,12 +4,17 @@
     <container type="docker">institutcuriengsintegration/filterpeaks:1.0</container>
   </requirements>
   <command interpreter="bash">
-  FilterPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -o $output -m $minHeightControl -w $outputC -r ${__root_dir__}
+  FilterPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -m $minHeightControl -r ${__root_dir__}
   
   #if $if_bed.if_bed_selector == "yes"
     -q $if_bed.nameControl 
     -n $if_bed.nameChIP 
     -l $if_bed.genome_selector
+    -o $outputB 
+    -w $outputBC 
+  #else
+    -o $output 
+    -w $outputC 
   #end if
  </command>
    <inputs>
