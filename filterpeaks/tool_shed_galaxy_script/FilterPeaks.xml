@@ -7,11 +7,11 @@
   FilterPeaks.sh -f $inputfile -c $controlfile -t $minHeight -v $minRatio -m $minHeightControl -r ${__root_dir__}
   
   #if $if_bed.if_bed_selector == "yes"
+    -o $outputB 
+    -w $outputBC 
     -q $if_bed.nameControl 
     -n $if_bed.nameChIP 
     -l $if_bed.genome_selector
-    -o $outputB 
-    -w $outputBC 
   #else
     -o $output 
     -w $outputC 
