@@ -1,7 +1,7 @@
 <tool id="ccat_int2bed" name="CCAT2bed" version="1.0">
   <description>Convert CCAT output (intervals) into Bed</description>
   <requirements>
-  	<container type="docker">institutcuriengsintegration/peakstobed:1.0</container>
+  	<container type="docker">institutcuriengsintegration/ccattobed:1.0</container>
   </requirements>
   <command interpreter="bash">
 ccat2bed.sh -f $inputfile -t $minHeight -o $output -g $genome_selector -n $name -r ${__root_dir__}
