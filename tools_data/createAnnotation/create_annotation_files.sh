@@ -29,7 +29,7 @@ then
 
                         CHR=`echo $line | awk '{print $1}'`
                         LENGTH=`echo $line | awk '{print $2}'`
-                        echo "$CHR      $LENGTH" >> $ANNOPATH/$BUILD.len
+                        echo "$CHR\t$LENGTH" >> $ANNOPATH/$BUILD.len
 
                 fi
 
