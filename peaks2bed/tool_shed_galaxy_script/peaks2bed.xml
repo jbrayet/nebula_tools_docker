@@ -1,7 +1,7 @@
 <tool id="peak2bed" name="Peaks2bed" version="1.0">
   <description>Convert FindPeaks output (.peaks) into Bed</description>
   <command interpreter="bash">
-peakstobed.sh -f $inputfile -t $minHeight -o $output -g $genome_selector -n $name -r ${__root_dir__}
+peaks2bed.sh -f $inputfile -t $minHeight -o $output -g $genome_selector -n $name -r ${__root_dir__}
  </command>
    <inputs>
     <param name="name" type="text" label="type of experiment" value="track_name"/>
