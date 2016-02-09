@@ -29,7 +29,7 @@ RUN apt-get update && \
 
 RUN mkdir /usr/bin/ccattobed
 WORKDIR /usr/bin/ccattobed
-RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/ccat2bed/tool_shed_galaxy_script/peaks2bed.pl -P /usr/bin/ccattobed
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/ccat2bed/tool_shed_galaxy_script/ccat_int2bed.pl -P /usr/bin/ccattobed
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/create_annotation_files.sh -P /usr/bin
 WORKDIR /usr/bin/ccattobed
 
