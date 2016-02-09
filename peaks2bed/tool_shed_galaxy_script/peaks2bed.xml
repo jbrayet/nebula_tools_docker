@@ -1,0 +1,27 @@
+<tool id="peak2bed" name="Peaks2bed" version="1.0">
+  <description>Convert FindPeaks output (.peaks) into Bed</description>
+  <command interpreter="bash">
+peakstobed.sh -f $inputfile -t $minHeight -o $output -g $genome_selector -n $name -r ${__root_dir__}
+ </command>
+   <inputs>
+    <param name="name" type="text" label="type of experiment" value="track_name"/>
+    <param name="inputfile" type="data" label="FindPeaks interval output file" value="FindPeaks interval output file" format="txt"/>          
+    <param name="genome_selector" type="select" label="Select the genome under study">
+        <option value="hg19" selected="true">hg19</option>	
+        <option value="hg18">hg18</option>
+        <option value="mm9">mm9</option>   
+        <option value="mm10">mm10</option>    
+    </param>
+    <param name="minHeight" type="integer" label="Minimal peak height to consider" value="3"/>
+
+  </inputs>
+  <outputs>
+    <data name="output" format="bed" label="${name}.bed"/>   
+  </outputs>
+  <help>
+**What it does**
+
+This tool creates a .bed file using .peaks output of FindPeaks
+
+  </help>
+</tool>
