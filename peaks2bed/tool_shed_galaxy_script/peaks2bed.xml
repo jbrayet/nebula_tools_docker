@@ -1,5 +1,8 @@
 <tool id="peak2bed" name="Peaks2bed" version="1.0">
   <description>Convert FindPeaks output (.peaks) into Bed</description>
+  <requirements>
+  	<container type="docker">institutcuriengsintegration/peakstobed:1.0</container>
+  </requirements>
   <command interpreter="bash">
 peaks2bed.sh -f $inputfile -t $minHeight -o $output -g $genome_selector -n $name -r ${__root_dir__}
  </command>
