@@ -7,7 +7,7 @@
 ccat2bed.sh -f $inputfile -t $minHeight -o $output -g $genome_selector -n $name -r ${__root_dir__}
  </command>
    <inputs>
-    <param name="name" type="text" label="type of experiment" value="track name"/>
+    <param name="name" type="text" label="type of experiment" value="track_name"/>
     <param name="inputfile" type="data" label="CCAT output interval file" value="CCAT output interval file" format="interval"/>          
     <param name="genome_selector" type="select" label="Select the genome under study">
         <option value="hg19" selected="true">hg19</option>	
