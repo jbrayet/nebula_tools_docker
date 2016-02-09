@@ -1,0 +1,30 @@
+<tool id="ccat_int2bed" name="CCAT2bed" version="1.0">
+  <description>Convert CCAT output (intervals) into Bed</description>
+  <requirements>
+  	<container type="docker">institutcuriengsintegration/peakstobed:1.0</container>
+  </requirements>
+  <command interpreter="bash">
+ccat2bed.sh -f $inputfile -t $minHeight -o $output -g $genome_selector -n $name -r ${__root_dir__}
+ </command>
+   <inputs>
+    <param name="name" type="text" label="type of experiment" value="track name"/>
+    <param name="inputfile" type="data" label="CCAT output interval file" value="CCAT output interval file" format="interval"/>          
+    <param name="genome_selector" type="select" label="Select the genome under study">
+        <option value="hg19" selected="true">hg19</option>	
+        <option value="hg18">hg18</option>
+        <option value="mm9">mm9</option>   
+        <option value="mm10">mm10</option>    
+    </param>
+    <param name="minHeight" type="integer" label="Minimal read count per peak to consider" value="0"/>
+
+  </inputs>
+  <outputs>
+    <data name="output" format="bed" label="${name}.bed"/>   
+  </outputs>
+  <help>
+**What it does**
+
+This tool creates a .bed file using .peaks output of CCAT
+
+  </help>
+</tool>
