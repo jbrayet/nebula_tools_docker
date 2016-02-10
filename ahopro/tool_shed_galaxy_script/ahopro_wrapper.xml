@@ -1,0 +1,275 @@
+<?xml version="1.0"?>
+<tool id="ahopro" name="AhoPro">
+	<description>Motif search and P-value calculation</description>
+	<requirements>
+  	    <container type="docker">institutcuriengsintegration/ahopro:1.3</container>
+    </requirements>
+	<command interpreter="bash">
+#set $actualN =len($function['motifs'])
+##silent sys.stderr.write("\n\n $actual_motifs=%s\n\n" % str ($actualN))
+ahopro_wrapper.sh ${ahopro_config} ${motif_file} ${function.function_selector} $outfile $function['seq_name'] $function['nbr_motif'] $actualN
+#if str ( $function.function_selector) == "p-value"
+${letter_freq_file}
+#end if
+</command>
+<!-- INPUTS -->	
+	<inputs>
+		<!-- Choose function !!-->
+		<conditional name="function">
+			<param name="function_selector" type="select" label="AhoPro can " help="Select a function.">
+				<option value="only" selected="true"> 1. Search for motifs in your DNA sequence</option>
+				<option value="p-value">2. Calculate the p-value for a given number of TFBS motifs</option>
+				<option value="occ_pvalue">3. Find occurrences of your TFBS motifs in your texts and calculate p-value</option>
+			</param>	
+			
+<!-- WHEN FUNCTION = search only-->
+			<when value="only">
+				<param name="nbr_motif" type="integer" value="1" label="Number of motifs" help="Make sure the number entered corresponds the the number of motif entry below."/>
+
+				<param name="seq" type="data" format="txt" label="DNA sequence"/>
+				<param name="seq_name" type="text" size="20" value="My sequence" label="Sequence name" help="The sequence name will appear on AhoPro output."/>
+
+				<!-- choose a model to generate random text -->
+				<conditional name="getTextModel">
+					<param name="get_selector" type="select" label="Model for random text">
+						<option value="0" selected="true">Bernoulli</option>
+						<option value="1">Markov (1)</option>
+					</param>
+				</conditional>
+								
+				<repeat name="motifs" title="Motif">
+					<param name="mode" type="select" label="Motif representation" help="Read about it below.">
+						<option value="PWM / PSSM" selected="true" > Position Weight Matrix (PWM)</option>
+						<option value="Enumeration">List</option>
+						<option value="Consensus">Consensus</option>
+
+					</param>
+					<param name="name" type="text" size="15" label="Motif name" />
+					<!-- only when PWM -->
+					<param name="threshold" type="float" value="5.5" label="Thresold" help="Only set a threshold when motifs are represented as PWMs."/>
+					<!-- Get motif -->
+					<param name="file" type="text" area="true" size="5x30" label="Motif" />
+					<param name="complement" type="boolean" truevalue="1" falsevalue="0" label="Include complementary motifs"/>
+				</repeat>
+			</when>
+		
+
+<!-- WHEN FUNCTION = P value only of a given number of TFBS. textLen/letterFreq must be known-->
+			<when value="p-value">
+				<param name="nbr_motif" type="integer" value="1" label="Number of motifs" help="Make sure the number entered corresponds the the number of motif entry below."/>
+				<param name="seq" type="data" format="txt" label="DNA sequence" help="Only needed when Model is set to Markov (1) OR when letter frequencies are calculated from sequence."/>								
+				<param name="seq_name" type="hidden" value="X"/>
+				<!-- choose a model to generate random text -->
+				<conditional name="getTextModel">
+					<param name="get_selector" type="select" label="Model for random text">
+						<option value="0" selected="true" >Bernoulli</option>
+						<option value="1">Markov (1)</option>
+					</param>								
+				<!-- when bernoulli-->
+					<when value="0">
+						<!-- choose a way to upload letter frequencies : paste directly or upload sequence for ahopro-->
+						<conditional name="getLetterFreq">
+							<param name="get_selector" type="select" label="Choose a way to send letter frequencies" help="Either paste letter frequencies, or send sequence (above) to calculate letter frequencies. ">
+								<option value="paste" selected="true">Paste letter frequencies</option>
+								<option value="upload"> Calculate letter frequencies from DNA sequence</option>
+							</param>
+							<when value="paste">
+								<param name="letterFreq" type="text" area="true" size="5x30" value="0.28 0.22 0.22 0.28" label="Paste letter frequencies"/>
+							</when>
+						</conditional>	
+					</when>
+				</conditional>
+				<param name="textLen" type="integer" value="100" label=" DNA Sequence length" />		
+								
+				<repeat name="motifs" title="Motif">
+					<param name="mode" type="select" label="Motif representation" help="Read about it below.">
+						<option value="PWM / PSSM" selected="true" > Position Weight Matrix (PWM)</option>
+					<!--	<option value="Enumeration">List</option>  -->
+						<option value="Consensus">Consensus</option>
+					</param>
+					<param name="name" type="text" size="15" label="Motif name" />
+					<!-- only when PWM -->
+					<param name="threshold" type="float" value="5.5" label="Thresold" help="Only set a threshold when motifs are represented as PWMs."/>
+					<!-- Get motif -->
+					<param name="occ" type="integer" value="1" label="Number of motif occurrences" />
+					<param name="file" type="text" area="true" size="5x30" label="Motif" />
+					<param name="complement" type="boolean" truevalue="1" falsevalue="0" label="Include complementary motifs"/>
+				</repeat>
+			</when>
+
+
+<!-- WHEN FUNCTION = find occurrences + calculte Pvalue-->
+			<when value="occ_pvalue">
+				<param name="nbr_motif" type="integer" value="1" label="Number of motifs" help="Make sure the number entered corresponds the the number of motif entry below."/>
+				<param name="seq" type="data" format="txt" label="DNA sequence"/>
+				<param name="seq_name" type="text" size="20" value="My sequence" label="Sequence name" help="The sequence name will appear on AhoPro output."/>
+				<!-- choose a model to generate random text -->
+				<conditional name="getTextModel">
+					<param name="get_selector" type="select" label="Model for random text">
+						<option value="0" selected="true">Bernoulli</option>
+						<option value="1">Markov (1)</option>
+					</param>
+				</conditional>		
+
+				<repeat name="motifs" title="Motif">
+					<param name="mode" type="select" label="Motif representation" help="Read about it below.">
+						<option value="PWM / PSSM" selected="true" > Position Weight Matrix (PWM)</option>
+						<option value="Enumeration">List</option>
+						<option value="Consensus">Consensus</option>
+					</param>
+			 		<param name="name" type="text" size="15" label="Motif name" />
+					
+					<!-- only when PWM -->
+					<param name="threshold" type="float" value="5.5" label="Thresold" help="Only set a threshold when motifs are represented as PWMs."/>
+					<!-- Get motif -->
+					<param name="file" type="text" area="true" size="5x30" label="Motif" />
+					<param name="complement" type="boolean" truevalue="1" falsevalue="0" label="Include complementary motifs"/>
+				</repeat>
+			</when>
+				
+		</conditional>
+	</inputs>
+<!-- config and tmp files !! NOTE : looks like one configfile cannot be called within another..too bad.-->
+	<configfiles>
+
+ 		<configfile name="ahopro_config"> <!--this creates config files with respect to all possible "scenarios" -->
+	#if str( $function.function_selector ) == "only" or str( $function.function_selector ) == "occ_pvalue"
+sequence $function['seq']
+search p-value
+	#else if str( $function.function_selector ) == "p-value"  <!-- if function = p-value -->
+		#if str ( $function.getTextModel.get_selector ) == "0" and str($function.getTextModel.getLetterFreq.get_selector) == "upload"
+sequence $function['seq']
+		#end if
+		#if str ( $function.getTextModel.get_selector ) == "0" and str($function.getTextModel.getLetterFreq.get_selector) == "paste"
+LetterFreqFile	
+		#end if
+		#if ( $function.getTextModel.get_selector ) == "1" ##markov
+sequence $function['seq']
+		#end if
+TextLen $function['textLen']
+	#end if
+TextModel $function.getTextModel.get_selector
+MotifsNumber $function['nbr_motif']
+	#for $m in $function.motifs <!-- motif blocks : mode, fileName, motifName threshold (if PWM), occnumber (if pvalue)-->
+motifMode $m.mode  
+MotifFilename 
+name $m.name
+	#if str ( $m.mode ) == "PWM / PSSM"
+threshold $m.threshold
+	#end if 
+	#if str ( $function.function_selector) == "p-value"
+occurenceNumber $m.occ
+	#end if 
+complement $m.complement
+	#end for
+		</configfile>
+	
+		<configfile name="letter_freq_file">
+#if (str( $function.function_selector ) == "p-value") and ( str( $function.getTextModel.get_selector ) == "0" ) and  ( str($function.getTextModel.getLetterFreq.get_selector) == "paste" )
+$function.getTextModel.getLetterFreq['letterFreq']
+#end if 
+		</configfile>
+ 		
+		<configfile name="motif_file"> <!-- this gathers entered motifs and seperate them by "*" for easy parsing. Does not put * at the end of motif list -->
+#for $n, $m in enumerate($function['motifs'])
+$m.file
+#if int($function['nbr_motif']) != 1 and int($n) != int($function['nbr_motif'])-1 <!-- if only 1 motif entred, don't add *. if many motifs are entred, don't add after the last one...-->
+*
+#end if
+#end for
+		</configfile>
+
+		</configfiles>
+	<outputs>
+		<data name="outfile" format="txt" label="AhoPro results"/>
+	</outputs>
+##AhoPro was created to seach for overrepresentation of given motifs in DNA sequences and to search for motif cooccurrence. This could discover the synergy of transcription factors (TF), which usually takes place in regulatory modules of genes.		
+	<help>
+**What it does**
+
+AhoPro is an exact p-value calculator for multiple occurrences of multiples motifs.
+
+Here you can :
+
+1. Search for motifs in your DNA sequence.
+2. Calculate the p-value for a given number of TFBS motifs.
+3. Find occurrences of your TFBS motifs in your texts and calculate p-value.
+
+Use these references to search for given motifs in your DNA sequence then calculate the P-value for the resultant motif occurrences.
+
+-----
+
+**Find a specific TFBS**
+
+If you wish to search for occurrences of a particular transcription factor binding site (TFBS) in a sequence, you can find information about your specific TFBS by refering to the Homo Sapiens Comprehensive Model Collection (HOCOMOCO) of transcription factor (TF) binding models. HOCOMOCO was obtained by careful integration of data from different sources, it contains 426 non-redundant curated binding models for 401 human TFs. 
+
+HOCOMOCO homepage : ((http://autosome.ru/HOCOMOCO/index.php))
+
+Thresholds for PWMs : http://autosome.ru/HOCOMOCO/download_helper.php?path=download/HOCOMOCOv9_AD_thresholds_PWM_hg19.zip&#038;name=HOCOMOCOv9_AD_thresholds_PWM_hg19.zip
+
+-----
+
+
+**Motif representation**
+
+You can choose :
+
+1. **List** for a motif given as enumeration of possible binding sites.
+
+* Example Bicoid motif::
+
+	Bicoid motif:
+	GCCCCTAATCCCTT
+	CCATCTAATCCCTT
+	TTGGCTAATCCCAG
+	GCCACTAATCCCGA
+	CAACGTAATCCCCA
+	AATTATAATCCCTT
+	...
+	...
+
+
+2. **PWM** for a motif given by its position weight matrix (PWM) and threshold. A PWM is a rectangular grid of numbers which shows the relative frequency a nucleotide will occur at a specific position. Two orientations are possible : 
+Row and Column. 
+
+AhroPro accepts both orientations.
+
+* Example Bicoid PWM::
+
+		Column PWM
+		
+	-0.544	0.423	0.356	-0.388
+	-0.398	 0.422	 -0.329	 0.128
+	-0.398	 -2.054	 -2.054	 0.992
+	1.135	 -2.054	 -1.400	 -2.054
+	1.164	 -2.054	 -2.054	 -2.054
+	-2.054	 -1.018	 -0.728	 1.025
+	-2.054	 1.408	 -2.054	 -2.054
+	-1.520	 1.185	 -1.008	 -0.702
+	-0.713	 0.422	 0.356	 -0.260
+	
+
+		Row PWM
+
+
+	-0.544 -0.398 -0.398 1.135 1.164 -2.054 -2.054 -1.520 -0.713 
+	0.423 0.422 -2.054 -2.054 -2.054 -1.018 1.408 1.185 0.422 
+	0.356 -0.329 -2.054 -1.400 -2.054 -0.728 -2.054 -1.008 0.356 
+	-0.388 0.128 0.992 -2.054 -2.054 1.025 -2.054 -0.702 -0.260 
+
+
+3. **Consensus** for a motif given by its IUPAC consensus.
+
+* Example AP-1::
+
+	RSTGACTNMNW
+
+	
+-----
+
+**Cite AhoPro**
+
+if you use this tool, please cite : Boeva V, Clement J, Regnier M, Roytberg M, Makeev V: Exact p-value calculation for heterotypic clusters of regulatory motifs and its application in computational annotation of cis-regulatory modules.Algorithms for Molecular Biology 2007, 2:13
+
+	</help>
+</tool>
