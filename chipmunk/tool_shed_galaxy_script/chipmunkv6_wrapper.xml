@@ -1,0 +1,111 @@
+<tool id="chipmunk_v6" name="(di)ChIPmunk" version="6.0">
+	<description>De novo motif finding</description>
+	<requirements>
+    	<container type="docker">institutcuriengsintegration/chipmunk:6.0</container>
+	</requirements>
+	<command interpreter="bash">chipmunkv6_wrapper.sh -f ${input_file} -n ${motif_number_selector} -s $chipmunk_version['version'] -m $minw -v $maxw -z $mode -o ${log_outfile} -i ${image_output} -x $name -r ${summary_file} -t ${seq_type}</command>
+	
+	<inputs>
+		<param name="name" type="text" value="ChIPseq" label="Name" />
+		<param name="input_file" type="data" format="fasta" label="Sequences"/>
+
+<!-- choose between mono, and dichipmunk-->      
+		<conditional name="chipmunk_version">
+			<param name="chipmunk_version_selector" type="select" label="ChIPMunk version" help="Read about ChIPmunk versions below.">
+				<option value="mono_chipmunk" selected="true">MonoChIPMunk</option>
+    	     	<option value="di_chipmunk">DiChIPMunk</option>
+			</param>
+			<when value="mono_chipmunk">
+				<param name="version" type="hidden" value="Mono"/>
+			</when>
+			<when value="di_chipmunk">
+				<param name="version" type="hidden" value="Di"/>
+			</when>
+		</conditional>     
+<!--chipmunk usage-->
+
+		<param name="seq_type" type="select" label="Type of the sequence set" help="Read about it below.">
+				<option value="s" selected="true">Simple</option>
+				<option value="p" >Peak data</option>
+		</param>
+
+		<param name="motif_number_selector" type="select" label="Number of different motifs to search">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3" selected="true">3</option>
+			<option value="4">4</option>
+		</param>
+        
+        <param name="minw" type="integer" value="10" label="Min width of motif to search"/>
+        <param name="maxw" type="integer" value="15" label="Max width of motif to search"/>      
+        <param name="mode" type="select" label="Mode for additional motif finding" help="use 'mask' to mask already identified motifs in your sequences and 'filter' to filter out the whole sequences with already identified motifs">
+        	<option value="filter">filter</option>
+        	<option value="mask" selected="true">mask</option>
+        </param>
+        
+   
+<!-- description of the outputs, log_file, processed_outputs, image_outputsm use montage to put out motif for the name sample-->   
+  </inputs>
+  <outputs>
+    <data format="txt" name="log_outfile" label="Detailed ChIPMunk log for ${name} (log)"/>
+    <data format="txt" name="summary_file" label="Summary information for ${name}(txt)"/>
+    <data format="png" name="image_output" label="Motifs for ${name}(png)"/>
+  </outputs>
+   
+  <help>
+**What it does**
+
+(di)ChIPmunk detects over-represented non-overlapping motifs in fasta sequences.
+
+**Which ChipMunk should you choose** : Mononucleotides Vs Dinucleotides
+
+- Mononucleotide version is to be used when:
+	(a) you do not know anything about motifs in your data (“draft” run) 
+	(b) you plan to use other tools for downstream analysis (most of the existing tools will be able to utilize only mononucleotide matrices).
+	
+- Dinucleotide version is better suited to produce a more precise representation of the optimal TFBS binding model. This would allow to properly estimate the number of sequences containing motif hits. e.g. to measure the percentage of “the most reliable” ChIP-Seq peaks in a given dataset.
+
+In terms of the consensus sequence, in general you should get very similar results from the mono- and dinucleotide versions.
+
+
+**Type of the sequence set**
+
+**Simple** : for simple mutil-fasta to be searched in a double-strand DNA mode (the most common choice)::
+
+	> header1
+	ACTGTGTGAAA
+	> header2
+	AGTGTGTGTGTG
+
+You can omit fasta headers since ChIPMunk would simply skip them. 
+
+
+**Peak** : for peak data with the positional prefences profile (often provided in wiggle-files, .wig). The profile of each sequence should be places in the fasta-header like::
+
+	> 1.0 2.0 3.0 2.0 1.5 2.0
+	AGTAAC
+	> 1.0 2.0 3.0 2.0 1.5
+	CAGTA
+
+
+See **"Peak multi-fasta generator"** in the tool pannel, if you wish to generate peak data. 
+
+NOTE that When base coverage information is available, it is highly recommaned to use peak data. This is extremely important for ChIPMunk performance.
+
+**Cite ChIPMunk**
+
+If you want to cite ChIPMunk in your research please refer to [1] for the basic mononucleotide version and to [2] for the dinucleotide version :
+
+[1] Deep and wide digging for binding motifs in ChIP-Seq data. Kulakovskiy IV, Boeva VA, Favorov AV,Makeev VJ. Bioinformatics. 2010 Oct 15;26(20):2622-3. doi: 10.1093/bioinformatics/btq488. Epub 2010 Aug24.
+
+
+[2] From binding motifs in ChIP-Seq data to improved models of transcription factor binding sites.Kulakovskiy I, Levitsky V, Oshchepkov D, Bryzgalov L, Vorontsov I, Makeev V. J Bioinform Comput Biol.2013 Feb;11(1):1340004. doi: 10.1142/S0219720013400040. Epub 2013 Jan 16.
+
+
+
+
+
+
+
+  </help>
+</tool>

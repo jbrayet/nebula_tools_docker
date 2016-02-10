@@ -62,6 +62,7 @@ esac
 done
 
 PATH_MICSA="/usr/bin/micsa/MICSA"
+PATH_CHIPMUNK="/usr/bin/micsa/ChIPMunk_6.0a"
 PATH_FP="/usr/bin/micsa/VancouverPackage-4.0.9.2/jars/fp4/"
 
 DATABASE_PATH=$ROOT_DIR/database/files
@@ -278,7 +279,7 @@ for (( i=1; i<= $N  ; i++))
 		#rm $OUTDIR/wig/motif\_$i.tmp.txt 1>> $LOG.tmp 2>&1
 		
 		#generate logs
-		ruby /bioinfo/local/build/ChIPMunk_6.0/pmflogo3.rb $OUTDIR/wig/motif\_$i.tmp.tmp.txt $OUTPNG.$i.png 1> /dev/null 2>&1
+		ruby $PATH_CHIPMUNK/pmflogo3.rb $OUTDIR/wig/motif\_$i.tmp.tmp.txt $OUTPNG.$i.png 1> /dev/null 2>&1
 		
 		rm $OUTDIR/wig/motif\_$i.tmp.tmp.txt
 		

@@ -24,6 +24,7 @@ RUN apt-get update && \
       wget \
       samtools \
       default-jre \
+      ruby-full \
       csh && \
     apt-get clean && \
     apt-get purge && \
