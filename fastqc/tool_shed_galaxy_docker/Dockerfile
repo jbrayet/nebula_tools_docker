@@ -22,19 +22,17 @@ RUN apt-get update && \
     apt-get install -y \
       build-essential \
       wget \
-      zlib1g-dev \
-      unzip && \
+      samtools && \
     apt-get clean && \
     apt-get purge && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN mkdir /usr/bin/ccat
-WORKDIR /usr/bin/ccat
-RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/CCAT3.0.tar.gz -P /usr/bin/ccat
-RUN tar -zxvf CCAT3.0.tar.gz
-RUN rm -f CCAT3.0.tar.gz
-RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_data/createAnnotation/create_annotation_files.sh -P /usr/bin
-WORKDIR /usr/bin/ccat
+RUN mkdir /usr/bin/fastqc
+WORKDIR /usr/bin/fastqc
+RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/FastQC.tar.gz -P /usr/bin/fastqc
+RUN tar -zxvf FastQC.tar.gz
+RUN rm -f FastQC.tar.gz
+WORKDIR /usr/bin/fastqc
 
 ##################### INSTALLATION END #####################
 
