@@ -35,6 +35,7 @@ WORKDIR /usr/bin/chipmunk
 RUN wget https://github.com/jbrayet/nebula_tools_docker/raw/master/tools_sources/ChIPMunk_6.0a.tar.gz -P /usr/bin/chipmunk
 RUN tar -zxvf ChIPMunk_6.0a.tar.gz
 RUN rm -f ChIPMunk_6.0a.tar.gz
+RUN gem install rmagick
 WORKDIR /usr/bin/chipmunk
 
 ##################### INSTALLATION END #####################
