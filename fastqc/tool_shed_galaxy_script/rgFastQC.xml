@@ -17,7 +17,7 @@
         -t "$text_file"
         -f "$input_file.ext"
         -j "$input_file.name"
-        -e "/usr/bin/FastQC/fastqc"
+        -e "/usr/bin/fastqc/FastQC/fastqc"
         #if $contaminants.dataset and str($contaminants) > ''
             -c "$contaminants"
         #end if
