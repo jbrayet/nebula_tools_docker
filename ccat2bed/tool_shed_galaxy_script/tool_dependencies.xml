@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tool_dependency>
     <package name="docker_ccattobed" version="0.1">
-        <repository changeset_revision="f27a5fca918f" name="docker_ccattobed" owner="jbrayet" toolshed="https://testtoolshed.g2.bx.psu.edu" />
+        <repository changeset_revision="8046a327dbb5" name="docker_ccattobed" owner="jbrayet" toolshed="https://testtoolshed.g2.bx.psu.edu" />
     </package>
 </tool_dependency>
