@@ -3,7 +3,7 @@
     <package name="docker_fastqc" version="0.1">
         <install version="1.0">
             <actions>
-                <action type="shell_command">docker pull institutcuriengsintegration/fastqc:1.0</action>
+                <action type="shell_command">docker pull institutcuriengsintegration/fastqc:0.11.4</action>
             </actions>
         </install>
         <readme>
