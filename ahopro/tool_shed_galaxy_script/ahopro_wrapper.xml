@@ -27,7 +27,7 @@ ${letter_freq_file}
 				<param name="nbr_motif" type="integer" value="1" label="Number of motifs" help="Make sure the number entered corresponds the the number of motif entry below."/>
 
 				<param name="seq" type="data" format="txt" label="DNA sequence"/>
-				<param name="seq_name" type="text" size="20" value="My sequence" label="Sequence name" help="The sequence name will appear on AhoPro output."/>
+				<param name="seq_name" type="text" size="20" value="My_sequence" label="Sequence name" help="The sequence name will appear on AhoPro output."/>
 
 				<!-- choose a model to generate random text -->
 				<conditional name="getTextModel">
