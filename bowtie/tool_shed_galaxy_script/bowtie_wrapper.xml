@@ -217,7 +217,7 @@
         <option value="paired">Paired-end</option>
       </param>
       <when value="single">
-        <param name="sInput1" type="data" format="fastqsanger,fastqillumina,fastqsolexa" label="FASTQ file" help="Must have ASCII encoded quality scores"/>
+        <param name="sInput1" type="data" format="fastq" label="FASTQ file" help="Must have ASCII encoded quality scores"/>
         <conditional name="sParams">
           <param name="sSettingsType" type="select" label="Bowtie settings to use" help="For most mapping needs use Commonly used settings. If you want full control use Full parameter list">
             <option value="preSet">Commonly used</option>

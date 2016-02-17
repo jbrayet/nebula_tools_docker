@@ -150,6 +150,7 @@ def __main__():
         colorspace = '-C'
     else:
         colorspace = ''
+    
     # index if necessary
     if options.genomeSource == 'history' and not options.do_not_build_index:
         # set up commands
